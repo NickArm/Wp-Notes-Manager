@@ -10,7 +10,17 @@ class NotificationManager {
     public function __construct() {
         global $wpdb;
         $this->wpdb = $wpdb;
-        $this->database_manager = wpnm()->getComponent('database');
+        // Database manager will be initialized when needed
+    }
+    
+    /**
+     * Get database component
+     */
+    private function getDatabase() {
+        if (!$this->getDatabase()) {
+            $this->getDatabase() = wpnm()->getComponent('database');
+        }
+        return $this->getDatabase();
     }
     
     public function init() {

@@ -32,7 +32,17 @@ class AjaxHandler {
      * Constructor
      */
     public function __construct() {
-        $this->database = wpnm()->getComponent('database');
+        // Database will be initialized when needed
+    }
+    
+    /**
+     * Get database component
+     */
+    private function getDatabase() {
+        if (!$this->database) {
+            $this->database = wpnm()->getComponent('database');
+        }
+        return $this->database;
     }
     
     /**
@@ -121,11 +131,11 @@ class AjaxHandler {
         }
         
         // Create note
-        $note_id = $this->database->createNote($note_data);
+        $note_id = $this->getDatabase()->createNote($note_data);
         
         if ($note_id) {
             // Get the created note
-            $note = $this->database->getNote($note_id);
+            $note = $this->getDatabase()->getNote($note_id);
             
             // Log the creation
             $audit_manager = wpnm()->getComponent('audit');
@@ -168,7 +178,7 @@ class AjaxHandler {
         }
         
         // Check if note exists
-        $note = $this->database->getNote($note_id);
+        $note = $this->getDatabase()->getNote($note_id);
         if (!$note) {
             wp_send_json_error(['message' => __('Note not found.', 'wp-notes-manager')]);
         }
@@ -198,11 +208,11 @@ class AjaxHandler {
         }
         
         // Update note
-        $result = $this->database->updateNote($note_id, $note_data);
+        $result = $this->getDatabase()->updateNote($note_id, $note_data);
         
         if ($result) {
             // Get the updated note
-            $updated_note = $this->database->getNote($note_id);
+            $updated_note = $this->getDatabase()->getNote($note_id);
             
             // Log the update
             $audit_manager = wpnm()->getComponent('audit');
@@ -266,7 +276,7 @@ class AjaxHandler {
         }
         
         // Check if note exists
-        $note = $this->database->getNote($note_id);
+        $note = $this->getDatabase()->getNote($note_id);
         if (!$note) {
             wp_send_json_error(['message' => __('Note not found.', 'wp-notes-manager')]);
         }
@@ -277,7 +287,7 @@ class AjaxHandler {
         }
         
         // Delete note
-        $result = $this->database->deleteNote($note_id);
+        $result = $this->getDatabase()->deleteNote($note_id);
         
         if ($result) {
             wp_send_json_success([
@@ -311,7 +321,7 @@ class AjaxHandler {
         }
         
         // Check if note exists
-        $note = $this->database->getNote($note_id);
+        $note = $this->getDatabase()->getNote($note_id);
         if (!$note) {
             wp_send_json_error(['message' => __('Note not found.', 'wp-notes-manager')]);
         }
@@ -322,7 +332,7 @@ class AjaxHandler {
         }
         
         // Archive note
-        $result = $this->database->archiveNote($note_id);
+        $result = $this->getDatabase()->archiveNote($note_id);
         
         if ($result) {
             wp_send_json_success([
@@ -355,7 +365,7 @@ class AjaxHandler {
         }
         
         // Restore note
-        $result = $this->database->restoreNote($note_id);
+        $result = $this->getDatabase()->restoreNote($note_id);
         
         if ($result) {
             wp_send_json_success([
@@ -393,7 +403,7 @@ class AjaxHandler {
         }
         
         // Get notes
-        $notes = $this->database->getNotes($note_type, $post_id, $limit, $offset);
+        $notes = $this->getDatabase()->getNotes($note_type, $post_id, $limit, $offset);
         
         wp_send_json_success([
             'notes' => $notes,
@@ -423,7 +433,7 @@ class AjaxHandler {
         }
         
         // Get note
-        $note = $this->database->getNote($note_id);
+        $note = $this->getDatabase()->getNote($note_id);
         
         if ($note) {
             wp_send_json_success([
@@ -449,7 +459,7 @@ class AjaxHandler {
         }
         
         // Get statistics
-        $stats = $this->database->getStats();
+        $stats = $this->getDatabase()->getStats();
         
         wp_send_json_success([
             'stats' => $stats

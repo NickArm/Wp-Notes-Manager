@@ -70,14 +70,18 @@ class AssetManager {
         
         // Get stages list for stage dropdown
         $stages_manager = wpnm()->getComponent('stages');
-        $stages = $stages_manager->getStages();
-        $stages_list = [];
-        foreach ($stages as $stage) {
-            $stages_list[$stage->id] = [
-                'name' => $stage->name,
-                'color' => $stage->color,
-                'description' => $stage->description
-            ];
+        if ($stages_manager) {
+            $stages = $stages_manager->getStages();
+            $stages_list = [];
+            foreach ($stages as $stage) {
+                $stages_list[$stage->id] = [
+                    'name' => $stage->name,
+                    'color' => $stage->color,
+                    'description' => $stage->description
+                ];
+            }
+        } else {
+            $stages_list = [];
         }
             
             // Localize script
