@@ -122,6 +122,14 @@ class WPNotesManager {
         $this->components['audit'] = new WPNotesManager\Audit\AuditManager();
         $this->components['ajax'] = new WPNotesManager\Ajax\AjaxHandler();
         $this->components['notifications'] = new WPNotesManager\Notifications\NotificationManager();
+        $this->components['assets'] = new WPNotesManager\Assets\AssetManager();
+        
+        // Initialize each component
+        foreach ($this->components as $component) {
+            if (method_exists($component, 'init')) {
+                $component->init();
+            }
+        }
     }
     
     public function getComponent($name) {
