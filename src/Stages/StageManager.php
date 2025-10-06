@@ -60,6 +60,54 @@ class StageManager {
     }
     
     /**
+     * Create default stages
+     */
+    public function createDefaultStages() {
+        $default_stages = [
+            [
+                'name' => 'To Do',
+                'description' => 'Tasks that need to be done',
+                'color' => '#0073aa',
+                'sort_order' => 1,
+                'is_default' => 1
+            ],
+            [
+                'name' => 'In Progress',
+                'description' => 'Tasks currently being worked on',
+                'color' => '#ff8c00',
+                'sort_order' => 2,
+                'is_default' => 1
+            ],
+            [
+                'name' => 'Review',
+                'description' => 'Tasks ready for review',
+                'color' => '#9932cc',
+                'sort_order' => 3,
+                'is_default' => 1
+            ],
+            [
+                'name' => 'Done',
+                'description' => 'Completed tasks',
+                'color' => '#28a745',
+                'sort_order' => 4,
+                'is_default' => 1
+            ]
+        ];
+        
+        foreach ($default_stages as $stage) {
+            // Check if stage already exists
+            $existing = $this->wpdb->get_var($this->wpdb->prepare(
+                "SELECT id FROM {$this->table_name} WHERE name = %s",
+                $stage['name']
+            ));
+            
+            if (!$existing) {
+                $this->wpdb->insert($this->table_name, $stage);
+            }
+        }
+    }
+    
+    /**
      * Get all stages
      *
      * @return array Array of stage objects

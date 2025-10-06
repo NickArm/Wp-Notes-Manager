@@ -15,6 +15,8 @@ class WPNM_SecurityTestSuite {
     private $test_results = [];
     private $database;
     private $security_manager;
+    private $current_test = '';
+    private $current_test_results = [];
     
     public function __construct() {
         $this->database = wpnm()->getComponent('database');

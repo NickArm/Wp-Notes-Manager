@@ -52,6 +52,76 @@ class DatabaseManager {
     }
     
     /**
+     * Create database tables
+     */
+    public function createTables() {
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        
+        // Notes table
+        $notes_table = $this->wpdb->prefix . 'wpnm_notes';
+        $notes_sql = "CREATE TABLE $notes_table (
+            id bigint(20) NOT NULL AUTO_INCREMENT,
+            title varchar(255) NOT NULL,
+            content longtext,
+            priority enum('low','medium','high','urgent') DEFAULT 'medium',
+            note_type varchar(50) DEFAULT 'dashboard',
+            author_id bigint(20) NOT NULL,
+            assigned_to bigint(20) DEFAULT NULL,
+            stage_id bigint(20) DEFAULT NULL,
+            deadline datetime DEFAULT NULL,
+            is_archived tinyint(1) DEFAULT 0,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY author_id (author_id),
+            KEY assigned_to (assigned_to),
+            KEY stage_id (stage_id),
+            KEY deadline (deadline),
+            KEY is_archived (is_archived)
+        ) " . $this->wpdb->get_charset_collate() . ";";
+        
+        dbDelta($notes_sql);
+        
+        // Stages table
+        $stages_table = $this->wpdb->prefix . 'wpnm_stages';
+        $stages_sql = "CREATE TABLE $stages_table (
+            id bigint(20) NOT NULL AUTO_INCREMENT,
+            name varchar(100) NOT NULL,
+            description text,
+            color varchar(7) DEFAULT '#0073aa',
+            sort_order int(11) DEFAULT 0,
+            is_default tinyint(1) DEFAULT 0,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY sort_order (sort_order),
+            KEY is_default (is_default)
+        ) " . $this->wpdb->get_charset_collate() . ";";
+        
+        dbDelta($stages_sql);
+        
+        // Audit logs table
+        $audit_table = $this->wpdb->prefix . 'wpnm_audit_logs';
+        $audit_sql = "CREATE TABLE $audit_table (
+            id bigint(20) NOT NULL AUTO_INCREMENT,
+            note_id bigint(20) NOT NULL,
+            user_id bigint(20) NOT NULL,
+            action varchar(50) NOT NULL,
+            old_value longtext,
+            new_value longtext,
+            ip_address varchar(45),
+            user_agent text,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY note_id (note_id),
+            KEY user_id (user_id),
+            KEY action (action),
+            KEY created_at (created_at)
+        ) " . $this->wpdb->get_charset_collate() . ";";
+        
+        dbDelta($audit_sql);
+    }
+    
+    /**
      * Create a new note
      *
      * @param array $data Note data

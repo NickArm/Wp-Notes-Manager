@@ -14,6 +14,8 @@ class WPNM_IntegrationTestSuite {
     
     private $test_results = [];
     private $database;
+    private $current_test = '';
+    private $current_test_results = [];
     
     public function __construct() {
         $this->database = wpnm()->getComponent('database');
