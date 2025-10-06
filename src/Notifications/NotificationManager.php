@@ -17,10 +17,10 @@ class NotificationManager {
      * Get database component
      */
     private function getDatabase() {
-        if (!$this->getDatabase()) {
-            $this->getDatabase() = wpnm()->getComponent('database');
+        if (!$this->database_manager) {
+            $this->database_manager = wpnm()->getComponent('database');
         }
-        return $this->getDatabase();
+        return $this->database_manager;
     }
     
     public function init() {
