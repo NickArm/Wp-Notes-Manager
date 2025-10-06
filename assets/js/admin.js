@@ -10,6 +10,9 @@ jQuery(document).ready(function($) {
         // Quick add note form
         $("#wpnm-quick-add-form").on("submit", handleQuickAddNote);
         
+        // Add note button (for meta box)
+        $(document).on("click", "#wpnm-add-note", handleAddNoteFromMetaBox);
+        
         // Note actions
         $(document).on("click", ".wpnm-delete-note, .wpnm-btn-delete", handleDeleteNote);
         $(document).on("click", ".wpnm-archive-note, .wpnm-btn-archive", handleArchiveNote);
@@ -98,6 +101,63 @@ jQuery(document).ready(function($) {
             complete: function() {
                 submitBtn.text(originalText).prop("disabled", false);
                 form.removeClass("wpnm-loading");
+            }
+        });
+    }
+    
+    function handleAddNoteFromMetaBox(e) {
+        e.preventDefault();
+        
+        // Debug logging
+        console.log('WP Notes Manager: handleAddNoteFromMetaBox called');
+        console.log('wpnm_admin object:', wpnm_admin);
+        
+        var button = $(this);
+        var container = button.closest('#wpnm-notes-container');
+        var originalText = button.text();
+        
+        // Show loading state
+        button.text('Adding...').prop("disabled", true);
+        
+        // Prepare data
+        var data = {
+            action: "wpnm_add_note",
+            note_type: "post",
+            post_id: $('input[name="post_ID"]').val(),
+            title: container.find("#wpnm-note-title").val(),
+            content: container.find("#wpnm-note-content").val(),
+            priority: container.find("#wpnm-note-priority").val(),
+            nonce: wpnm_admin.nonce
+        };
+        
+        // Debug logging
+        console.log('WP Notes Manager: Sending AJAX data:', data);
+        
+        // Send AJAX request
+        $.ajax({
+            url: wpnm_admin.ajax_url,
+            type: "POST",
+            data: data,
+            success: function(response) {
+                console.log('WP Notes Manager: AJAX response:', response);
+                if (response.success) {
+                    showMessage('Note added successfully!', "success");
+                    // Clear form
+                    container.find("#wpnm-note-title").val('');
+                    container.find("#wpnm-note-content").val('');
+                    container.find("#wpnm-note-priority").val('medium');
+                    // Refresh notes list
+                    location.reload();
+                } else {
+                    console.log('WP Notes Manager: AJAX error:', response.data);
+                    showMessage(response.data.message || 'An error occurred. Please try again.', "error");
+                }
+            },
+            error: function() {
+                showMessage('An error occurred. Please try again.', "error");
+            },
+            complete: function() {
+                button.text(originalText).prop("disabled", false);
             }
         });
     }
