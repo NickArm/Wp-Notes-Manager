@@ -32,7 +32,17 @@ class AdminManager {
      * Constructor
      */
     public function __construct() {
-        $this->database = wpnm()->getComponent('database');
+        // Database will be initialized when needed
+    }
+    
+    /**
+     * Get database component
+     */
+    private function getDatabase() {
+        if (!$this->database) {
+            $this->database = wpnm()->getComponent('database');
+        }
+        return $this->database;
     }
     
     /**
@@ -245,10 +255,10 @@ class AdminManager {
      */
     public function renderDashboardPage() {
         // Get statistics
-        $stats = $this->database->getStats();
+        $stats = $this->getDatabase()->getStats();
         
         // Get recent notes
-        $recent_notes = $this->database->getDashboardNotes(10);
+        $recent_notes = $this->getDatabase()->getDashboardNotes(10);
         
         ?>
         <div class="wrap">
@@ -463,17 +473,17 @@ class AdminManager {
         $offset = ($current_page - 1) * $per_page;
         
         if ($filter === 'my') {
-            $notes = $this->database->getNotesByAuthor($current_user_id, $per_page, $offset);
-            $total_notes = $this->database->getNotesCountByAuthor($current_user_id);
+            $notes = $this->getDatabase()->getNotesByAuthor($current_user_id, $per_page, $offset);
+            $total_notes = $this->getDatabase()->getNotesCountByAuthor($current_user_id);
         } elseif ($filter === 'assigned') {
-            $notes = $this->database->getNotesByAssignment($current_user_id, $per_page, $offset);
-            $total_notes = $this->database->getNotesCountByAssignment($current_user_id);
+            $notes = $this->getDatabase()->getNotesByAssignment($current_user_id, $per_page, $offset);
+            $total_notes = $this->getDatabase()->getNotesCountByAssignment($current_user_id);
         } elseif ($stage_filter) {
-            $notes = $this->database->getNotesByStage($stage_filter, $per_page, $offset);
-            $total_notes = $this->database->getNotesCountByStage($stage_filter);
+            $notes = $this->getDatabase()->getNotesByStage($stage_filter, $per_page, $offset);
+            $total_notes = $this->getDatabase()->getNotesCountByStage($stage_filter);
         } else {
-            $notes = $this->database->getAllNotes($per_page, $offset);
-            $total_notes = $this->database->getAllNotesCount();
+            $notes = $this->getDatabase()->getAllNotes($per_page, $offset);
+            $total_notes = $this->getDatabase()->getAllNotesCount();
         }
         
         $total_pages = ceil($total_notes / $per_page);

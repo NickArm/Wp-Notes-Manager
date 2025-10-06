@@ -32,7 +32,17 @@ class NotesManager {
      * Constructor
      */
     public function __construct() {
-        $this->database = wpnm()->getComponent('database');
+        // Database will be initialized when needed
+    }
+    
+    /**
+     * Get database component
+     */
+    private function getDatabase() {
+        if (!$this->database) {
+            $this->database = wpnm()->getComponent('database');
+        }
+        return $this->database;
     }
     
     /**
@@ -94,7 +104,7 @@ class NotesManager {
         wp_nonce_field('wpnm_notes_nonce', 'wpnm_notes_nonce');
         
         // Get existing notes
-        $notes = $this->database->getNotes($post->post_type, $post->ID, 10);
+        $notes = $this->getDatabase()->getNotes($post->post_type, $post->ID, 10);
         
         ?>
         <div id="wpnm-notes-container">
@@ -315,7 +325,7 @@ class NotesManager {
                 'color' => sanitize_hex_color($_POST['wpnm_note_color'] ?? '#f1f1f1')
             ];
             
-            $this->database->createNote($note_data);
+            $this->getDatabase()->createNote($note_data);
         }
     }
     
@@ -329,7 +339,7 @@ class NotesManager {
             return;
         }
         
-        $notes_count = $this->database->getNotesCount('dashboard');
+        $notes_count = $this->getDatabase()->getNotesCount('dashboard');
         
         $wp_admin_bar->add_node([
             'id' => 'wpnm-notes',
@@ -360,7 +370,7 @@ class NotesManager {
      * Render dashboard widget
      */
     public function renderDashboardWidget() {
-        $notes = $this->database->getDashboardNotes(5);
+        $notes = $this->getDatabase()->getDashboardNotes(5);
         
         if (empty($notes)) {
             echo '<p>' . __('No notes yet.', 'wp-notes-manager') . '</p>';
@@ -614,7 +624,7 @@ class NotesManager {
      */
     public function showNotesColumn($column_name, $post_id) {
         if ($column_name === 'wpnm_notes') {
-            $notes_count = $this->database->getNotesCount(get_post_type($post_id), $post_id);
+            $notes_count = $this->getDatabase()->getNotesCount(get_post_type($post_id), $post_id);
             
             if ($notes_count > 0) {
                 echo '<span style="color: #0073aa;">' . sprintf(_n('%d note', '%d notes', $notes_count, 'wp-notes-manager'), $notes_count) . '</span>';
