@@ -47,6 +47,10 @@ jQuery(document).ready(function($) {
     function handleQuickAddNote(e) {
         e.preventDefault();
         
+        // Debug logging
+        console.log('WP Notes Manager: handleQuickAddNote called');
+        console.log('wpnm_admin object:', wpnm_admin);
+        
         var form = $(this);
         var submitBtn = form.find("button[type=submit]");
         var originalText = submitBtn.text();
@@ -69,17 +73,22 @@ jQuery(document).ready(function($) {
             nonce: wpnm_admin.nonce
         };
         
+        // Debug logging
+        console.log('WP Notes Manager: Sending AJAX data:', data);
+        
         // Send AJAX request
         $.ajax({
             url: wpnm_admin.ajax_url,
             type: "POST",
             data: data,
             success: function(response) {
+                console.log('WP Notes Manager: AJAX response:', response);
                 if (response.success) {
                     showMessage(wpnm_admin.strings.note_added, "success");
                     form[0].reset();
                     refreshNotesList();
                 } else {
+                    console.log('WP Notes Manager: AJAX error:', response.data);
                     showMessage(response.data.message || wpnm_admin.strings.error_occurred, "error");
                 }
             },
