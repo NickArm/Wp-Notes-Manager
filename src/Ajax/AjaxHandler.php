@@ -89,14 +89,19 @@ class AjaxHandler {
      * Add new note
      */
     public function addNote() {
+        // Debug logging
+        error_log('WP Notes Manager: AJAX addNote called');
+        
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
+            error_log('WP Notes Manager: Nonce verification failed');
             wp_send_json_error(['message' => __('Security check failed.', 'wp-notes-manager')]);
             return;
         }
         
         // Check user permissions
         if (!current_user_can('edit_posts')) {
+            error_log('WP Notes Manager: User does not have permission');
             wp_send_json_error(['message' => __('You do not have permission to add notes.', 'wp-notes-manager')]);
         }
         
@@ -131,7 +136,9 @@ class AjaxHandler {
         }
         
         // Create note
+        error_log('WP Notes Manager: Creating note with data: ' . print_r($note_data, true));
         $note_id = $this->getDatabase()->createNote($note_data);
+        error_log('WP Notes Manager: Note creation result: ' . $note_id);
         
         if ($note_id) {
             // Get the created note
@@ -139,12 +146,14 @@ class AjaxHandler {
             
             // Log the creation
             $audit_manager = wpnm()->getComponent('audit');
-            $audit_manager->logAction($note_id, 'note_created', [
-                'title' => $note_data['title'],
-                'note_type' => $note_data['note_type'],
-                'assigned_to' => $note_data['assigned_to'],
-                'stage_id' => $note_data['stage_id']
-            ]);
+            if ($audit_manager) {
+                $audit_manager->logAction($note_id, 'note_created', [
+                    'title' => $note_data['title'],
+                    'note_type' => $note_data['note_type'],
+                    'assigned_to' => $note_data['assigned_to'],
+                    'stage_id' => $note_data['stage_id']
+                ]);
+            }
             
             wp_send_json_success([
                 'message' => __('Note added successfully!', 'wp-notes-manager'),
