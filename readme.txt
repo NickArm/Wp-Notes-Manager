@@ -4,7 +4,7 @@ Tags: notes, task management, collaboration, todo, productivity
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -113,6 +113,10 @@ Yes! All data is stored in your WordPress database. No external services are use
 6. Mobile responsive design
 
 == Changelog ==
+
+= 1.1.2 - 2025-01-07 =
+* Fixed: Text Domain changed to 'notes-manager' to match WordPress.org slug expectations
+* Improved: Final WordPress.org compliance update for proper text domain handling
 
 = 1.1.1 - 2025-01-07 =
 * Fixed: Text Domain to match plugin slug (wp-notes-manager) for WordPress.org compliance

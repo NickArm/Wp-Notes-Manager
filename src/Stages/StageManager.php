@@ -333,7 +333,7 @@ class StageManager {
     public function ajaxGetStages() {
         // Check permissions
         if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => esc_html__('You do not have permission to view stages.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to view stages.', 'notes-manager')]);
         }
         
         $stages = $this->getStages();
@@ -346,12 +346,12 @@ class StageManager {
     public function ajaxCreateStage() {
         // Check permissions
         if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => esc_html__('You do not have permission to create stages.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to create stages.', 'notes-manager')]);
         }
         
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
         }
         
         $stage_id = $this->createStage($_POST);
@@ -360,9 +360,9 @@ class StageManager {
             // Clear cache
             delete_transient('wpnm_stages_list');
             $stage = $this->getStage($stage_id);
-            wp_send_json_success(['stage' => $stage, 'message' => esc_html__('Stage created successfully!', 'wp-notes-manager')]);
+            wp_send_json_success(['stage' => $stage, 'message' => esc_html__('Stage created successfully!', 'notes-manager')]);
         } else {
-            wp_send_json_error(['message' => esc_html__('Failed to create stage.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Failed to create stage.', 'notes-manager')]);
         }
     }
     
@@ -372,12 +372,12 @@ class StageManager {
     public function ajaxUpdateStage() {
         // Check permissions
         if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => esc_html__('You do not have permission to update stages.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to update stages.', 'notes-manager')]);
         }
         
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
         }
         
         $stage_id = absint($_POST['stage_id']);
@@ -385,9 +385,9 @@ class StageManager {
         
         if ($result) {
             $stage = $this->getStage($stage_id);
-            wp_send_json_success(['stage' => $stage, 'message' => esc_html__('Stage updated successfully!', 'wp-notes-manager')]);
+            wp_send_json_success(['stage' => $stage, 'message' => esc_html__('Stage updated successfully!', 'notes-manager')]);
         } else {
-            wp_send_json_error(['message' => esc_html__('Failed to update stage.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Failed to update stage.', 'notes-manager')]);
         }
     }
     
@@ -397,21 +397,21 @@ class StageManager {
     public function ajaxDeleteStage() {
         // Check permissions
         if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => esc_html__('You do not have permission to delete stages.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to delete stages.', 'notes-manager')]);
         }
         
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
         }
         
         $stage_id = absint($_POST['stage_id']);
         $result = $this->deleteStage($stage_id);
         
         if ($result) {
-            wp_send_json_success(['message' => esc_html__('Stage deleted successfully!', 'wp-notes-manager')]);
+            wp_send_json_success(['message' => esc_html__('Stage deleted successfully!', 'notes-manager')]);
         } else {
-            wp_send_json_error(['message' => esc_html__('Failed to delete stage.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Failed to delete stage.', 'notes-manager')]);
         }
     }
     
@@ -422,14 +422,14 @@ class StageManager {
         // Check if nonce exists
         if (!isset($_POST['nonce'])) {
             // Debug log removed for production
-            wp_send_json_error(['message' => esc_html__('Security check failed - no nonce.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed - no nonce.', 'notes-manager')]);
             return;
         }
         
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
             // Debug log removed for production
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
             return;
         }
         
@@ -442,7 +442,7 @@ class StageManager {
         $note = $database->getNote($note_id);
         
         if (!$note) {
-            wp_send_json_error(['message' => esc_html__('Note not found.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Note not found.', 'notes-manager')]);
         }
         
         // Check permissions
@@ -463,7 +463,7 @@ class StageManager {
         }
         
         if (!$can_change_stage) {
-            wp_send_json_error(['message' => __('You do not have permission to change this note\'s stage.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => __('You do not have permission to change this note\'s stage.', 'notes-manager')]);
         }
         
         // Get old stage
@@ -487,14 +487,14 @@ class StageManager {
             
             // Debug log removed for production
             wp_send_json_success([
-                'message' => esc_html__('Note stage updated successfully!', 'wp-notes-manager'),
+                'message' => esc_html__('Note stage updated successfully!', 'notes-manager'),
                 'stage' => $new_stage,
                 'stage_name' => $new_stage ? $new_stage->name : 'No Stage',
                 'stage_color' => $new_stage ? $new_stage->color : '#6b7280'
             ]);
         } else {
             // Debug log removed for production
-            wp_send_json_error(['message' => esc_html__('Failed to update note stage.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Failed to update note stage.', 'notes-manager')]);
         }
     }
 }
