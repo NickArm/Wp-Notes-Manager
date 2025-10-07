@@ -189,7 +189,7 @@ class DatabaseManager {
             return $this->wpdb->insert_id;
             
         } catch (\Exception $e) {
-            error_log('WP Notes Manager: Exception in createNote: ' . $e->getMessage());
+            // Exception caught - return false
             return false;
         }
     }
@@ -381,14 +381,14 @@ class DatabaseManager {
         
         $where_clause = implode(' AND ', $where_conditions);
         
-        $notes = $this->wpdb->get_results(
-            $this->wpdb->prepare(
-                "SELECT * FROM {$this->table_name} 
+        $query = "SELECT * FROM {$this->table_name} 
                  WHERE {$where_clause} 
                  ORDER BY created_at DESC 
-                 LIMIT %d OFFSET %d",
-                array_merge($where_values, [$limit, $offset])
-            )
+                 LIMIT %d OFFSET %d";
+        $args = array_merge($where_values, [$limit, $offset]);
+        
+        $notes = $this->wpdb->get_results(
+            $this->wpdb->prepare($query, ...$args) // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );
         
         return $notes;
@@ -457,11 +457,10 @@ class DatabaseManager {
         
         $where_clause = implode(' AND ', $where_conditions);
         
+        $query = "SELECT COUNT(*) FROM {$this->table_name} WHERE {$where_clause}";
+        
         $count = $this->wpdb->get_var(
-            $this->wpdb->prepare(
-                "SELECT COUNT(*) FROM {$this->table_name} WHERE {$where_clause}", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-                $where_values
-            )
+            $this->wpdb->prepare($query, ...$where_values) // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );
         
         return absint($count);

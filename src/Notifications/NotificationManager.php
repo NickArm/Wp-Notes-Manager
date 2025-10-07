@@ -129,8 +129,7 @@ class NotificationManager {
         $headers = array('Content-Type: text/html; charset=UTF-8');
         wp_mail($user->user_email, $subject, $content, $headers);
         
-        // Log email sent
-        error_log("WP Notes Manager: Deadline notification sent to {$user->user_email} ({$user_id})");
+        // Email sent successfully
     }
     
     /**

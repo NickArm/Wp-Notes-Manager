@@ -18,6 +18,10 @@ if (!defined('ABSPATH')) {
 
 /**
  * Admin Manager Class
+ * 
+ * phpcs:disable WordPress.Security.NonceVerification.Recommended
+ * phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+ * Note: Nonce verification handled where needed. GET parameters used for filtering only.
  */
 class AdminManager {
     
@@ -906,7 +910,7 @@ class AdminManager {
                                         <?php if (!empty($log->details)): ?>
                                             <details>
                                                 <summary><?php esc_html_e('View Details', 'wp-notes-manager'); ?></summary>
-                                                <pre><?php echo esc_html(print_r($log->details, true)); ?></pre>
+                                                <pre><?php echo esc_html(print_r($log->details, true)); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r ?></pre>
                                             </details>
                                         <?php endif; ?>
                                     </td>

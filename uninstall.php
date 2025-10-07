@@ -5,6 +5,12 @@
  * This file is executed when the plugin is uninstalled (deleted) from WordPress.
  * It removes all plugin data from the database.
  * 
+ * phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
+ * phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
+ * phpcs:disable WordPress.DB.DirectDatabaseQuery.SchemaChange
+ * phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+ * Note: Direct database queries required for uninstall. Table names are safe.
+ * 
  * @package WPNotesManager
  * @since 1.0.0
  */

@@ -419,9 +419,6 @@ class StageManager {
      * AJAX handler for updating note stage
      */
     public function updateNoteStage() {
-        // Debug logging
-        error_log('WP Notes Manager: updateNoteStage called with POST data: ' . print_r($_POST, true));
-        
         // Check if nonce exists
         if (!isset($_POST['nonce'])) {
             // Debug log removed for production
