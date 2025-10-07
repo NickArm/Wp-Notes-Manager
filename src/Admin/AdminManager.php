@@ -337,7 +337,7 @@ class AdminManager {
                                     <?php
                                     $users = get_users(['orderby' => 'display_name']);
                                     foreach ($users as $user) {
-                                        printf('<option value="%d">%s</option>', $user->ID, esc_html($user->display_name));
+                                        printf('<option value="%d">%s</option>', esc_attr($user->ID), esc_html($user->display_name));
                                     }
                                     ?>
                                 </select>
@@ -524,7 +524,7 @@ class AdminManager {
                             $stages = $stages_manager->getStages();
                             foreach ($stages as $stage) {
                                 $selected = ($stage_filter == $stage->id) ? 'selected' : '';
-                                printf('<option value="%d" %s>%s</option>', $stage->id, esc_attr($selected), esc_html($stage->name));
+                                printf('<option value="%d" %s>%s</option>', esc_attr($stage->id), esc_attr($selected), esc_html($stage->name));
                             }
                             ?>
                         </select>
@@ -596,7 +596,7 @@ class AdminManager {
                                         <?php
                                         $users = get_users(['orderby' => 'display_name']);
                                         foreach ($users as $user) {
-                                            printf('<option value="%d">%s</option>', $user->ID, esc_html($user->display_name));
+                                            printf('<option value="%d">%s</option>', esc_attr($user->ID), esc_html($user->display_name));
                                         }
                                         ?>
                                     </select>
@@ -613,7 +613,7 @@ class AdminManager {
                         $stages_manager = wpnm()->getComponent('stages');
                         $stages = $stages_manager->getStages();
                         foreach ($stages as $stage) {
-                            printf('<option value="%d">%s</option>', $stage->id, esc_html($stage->name));
+                            printf('<option value="%d">%s</option>', esc_attr($stage->id), esc_html($stage->name));
                         }
                         ?>
                     </select>
@@ -861,7 +861,7 @@ class AdminManager {
                     <div class="wpnm-audit-logs-info">
                         <?php
                         // translators: %d is the number of log entries
-                        printf(esc_html__('Total log entries: %d', 'wp-notes-manager'), $total_logs);
+                        printf(esc_html__('Total log entries: %d', 'wp-notes-manager'), esc_html($total_logs));
                         ?>
                     </div>
                     <div class="wpnm-audit-logs-actions">
