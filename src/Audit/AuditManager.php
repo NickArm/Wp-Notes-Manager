@@ -267,6 +267,7 @@ class AuditManager {
         $deleted = $this->clearAuditLogs($days);
         
         wp_send_json_success([
+            // translators: %d is the number of deleted log entries
             'message' => sprintf(__('%d audit log entries cleared.', 'wp-notes-manager'), $deleted),
             'deleted' => $deleted
         ]);
@@ -301,10 +302,13 @@ class AuditManager {
                 $new_user = $details['new_assigned_to'] ? get_user_by('id', $details['new_assigned_to']) : null;
                 
                 if ($old_user && $new_user) {
-                    return sprintf(__('Assignment changed from %s to %s', 'wp-notes-manager'), $old_user->display_name, $new_user->display_name);
+                    // translators: %1$s is the old user name, %2$s is the new user name
+                    return sprintf(__('Assignment changed from %1$s to %2$s', 'wp-notes-manager'), $old_user->display_name, $new_user->display_name);
                 } elseif ($new_user) {
+                    // translators: %s is the user name
                     return sprintf(__('Assigned to %s', 'wp-notes-manager'), $new_user->display_name);
                 } elseif ($old_user) {
+                    // translators: %s is the user name
                     return sprintf(__('Unassigned from %s', 'wp-notes-manager'), $old_user->display_name);
                 }
                 return __('Assignment changed', 'wp-notes-manager');
@@ -312,7 +316,8 @@ class AuditManager {
             case 'stage_changed':
                 $old_stage = $details['old_stage'] ?? 'None';
                 $new_stage = $details['new_stage'] ?? 'None';
-                return sprintf(__('Stage changed from %s to %s', 'wp-notes-manager'), $old_stage, $new_stage);
+                // translators: %1$s is the old stage name, %2$s is the new stage name
+                return sprintf(__('Stage changed from %1$s to %2$s', 'wp-notes-manager'), $old_stage, $new_stage);
                 
             default:
                 return ucfirst(str_replace('_', ' ', $action));

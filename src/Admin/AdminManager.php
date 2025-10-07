@@ -684,8 +684,8 @@ class AdminManager {
                         $pagination_args = [
                             'base' => add_query_arg(['paged' => '%#%', 'filter' => $filter, 'stage' => $stage_filter]),
                             'format' => '',
-                            'prev_text' => __('&laquo; Previous'),
-                            'next_text' => __('Next &raquo;'),
+                            'prev_text' => __('&laquo; Previous', 'wp-notes-manager'),
+                            'next_text' => __('Next &raquo;', 'wp-notes-manager'),
                             'total' => $total_pages,
                             'current' => $current_page
                         ];
@@ -859,7 +859,10 @@ class AdminManager {
             <div class="wpnm-audit-logs-container">
                 <div class="wpnm-audit-logs-header">
                     <div class="wpnm-audit-logs-info">
-                        <p><?php printf(__('Total log entries: %d', 'wp-notes-manager'), $total_logs); ?></p>
+                        <?php
+                        // translators: %d is the number of log entries
+                        printf(__('Total log entries: %d', 'wp-notes-manager'), $total_logs);
+                        ?>
                     </div>
                     <div class="wpnm-audit-logs-actions">
                         <button type="button" class="button" id="wpnm-clear-audit-logs-btn">
@@ -1132,7 +1135,10 @@ class AdminManager {
                 <?php echo wp_kses_post($note->content); ?>
             </div>
             <div class="wpnm-note-meta">
-                <?php printf(__('By %s on %s', 'wp-notes-manager'), esc_html($author_name), esc_html($created_date)); ?>
+                <?php
+                // translators: %1$s is the author name, %2$s is the creation date
+                printf(__('By %1$s on %2$s', 'wp-notes-manager'), esc_html($author_name), esc_html($created_date));
+                ?>
             </div>
             <div class="wpnm-note-actions">
                 <button type="button" class="button button-small wpnm-archive-note" data-note-id="<?php echo esc_attr($note->id); ?>">

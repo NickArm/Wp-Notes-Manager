@@ -110,6 +110,7 @@ class NotificationManager {
             return;
         }
         
+        // translators: %d is the number of tasks
         $subject = sprintf(__('Upcoming Deadlines - %d Tasks Requiring Attention', 'wp-notes-manager'), count($deadlines));
         
         // Prepare email content
@@ -146,11 +147,14 @@ class NotificationManager {
         $html .= '</style></head><body>';
         
         $html .= '<div class="header">';
+        // translators: %s is the site name
         $html .= '<h1>' . sprintf(__('Upcoming Deadlines - %s', 'wp-notes-manager'), $site_name) . '</h1>';
         $html .= '</div>';
         
         $html .= '<div class="content">';
+        // translators: %s is the user name
         $html .= '<p>' . sprintf(__('Hello %s,', 'wp-notes-manager'), esc_html($user->display_name)) . '</p>';
+        // translators: %d is the number of tasks
         $html .= '<p>' . sprintf(__('You have %d tasks with upcoming deadlines:', 'wp-notes-manager'), count($deadlines)) . '</p>';
         
         foreach ($deadlines as $note) {
@@ -227,7 +231,7 @@ class NotificationManager {
                             <?php _e('Send notifications for deadlines within:', 'wp-notes-manager'); ?>
                             <select name="wpnm_notifications[deadlines][days_ahead]">
                                 <option value="1" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 1); ?>><?php _e('1 day', 'wp-notes-manager'); ?></option>
-                                <option value="3" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 3); ?>><?php _e('3 days (default)', 'wp-news-manager'); ?></option>
+                                <option value="3" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 3); ?>><?php _e('3 days (default)', 'wp-notes-manager'); ?></option>
                                 <option value="7" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 7); ?>><?php _e('7 days', 'wp-notes-manager'); ?></option>
                                 <option value="14" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 14); ?>><?php _e('14 days', 'wp-notes-manager'); ?></option>
                             </select>

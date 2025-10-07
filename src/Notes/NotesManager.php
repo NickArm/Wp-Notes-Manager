@@ -222,7 +222,10 @@ class NotesManager {
                 <?php echo wp_kses_post($note->content); ?>
             </div>
             <div class="wpnm-note-meta">
-                <?php printf(__('By %s on %s', 'wp-notes-manager'), esc_html($author_name), esc_html($created_date)); ?>
+                <?php
+                // translators: %1$s is the author name, %2$s is the creation date
+                printf(__('By %1$s on %2$s', 'wp-notes-manager'), esc_html($author_name), esc_html($created_date));
+                ?>
                 
                 <?php if ($note->deadline): ?>
                     <div class="wpnm-note-deadline">
@@ -304,6 +307,7 @@ class NotesManager {
         
         $wp_admin_bar->add_node([
             'id' => 'wpnm-notes',
+            // translators: %d is the number of notes
             'title' => sprintf(__('Notes (%d)', 'wp-notes-manager'), $notes_count),
             'href' => admin_url('admin.php?page=wpnm-dashboard'),
             'meta' => [
@@ -364,7 +368,12 @@ class NotesManager {
                 <?php echo esc_html(ucfirst($note->priority)); ?>
             </span>
             <p style="margin: 5px 0; font-size: 13px;"><?php echo wp_kses_post(wp_trim_words($note->content, 20)); ?></p>
-            <small style="color: #666;"><?php printf(__('By %s on %s', 'wp-notes-manager'), esc_html($author_name), esc_html($created_date)); ?></small>
+            <small style="color: #666;">
+                <?php
+                // translators: %1$s is the author name, %2$s is the creation date
+                printf(__('By %1$s on %2$s', 'wp-notes-manager'), esc_html($author_name), esc_html($created_date));
+                ?>
+            </small>
         </div>
         <?php
     }
@@ -588,6 +597,7 @@ class NotesManager {
             $notes_count = $this->getDatabase()->getNotesCount(get_post_type($post_id), $post_id);
             
             if ($notes_count > 0) {
+                // translators: %d is the number of notes
                 echo '<span style="color: #0073aa;">' . sprintf(_n('%d note', '%d notes', $notes_count, 'wp-notes-manager'), $notes_count) . '</span>';
             } else {
                 echo '<span style="color: #999;">' . __('No notes', 'wp-notes-manager') . '</span>';
