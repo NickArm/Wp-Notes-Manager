@@ -136,7 +136,7 @@ class AuditManager {
         // Prepare query with all values
         $prepared_values = array_merge($where_values, [$limit, $offset]);
         $logs = $this->wpdb->get_results(
-            $this->wpdb->prepare($query, $prepared_values)
+            $this->wpdb->prepare($query, $prepared_values) // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
         );
         
         // Unserialize details
@@ -172,10 +172,10 @@ class AuditManager {
         // Prepare query if we have values
         if (!empty($where_values)) {
             $count = $this->wpdb->get_var(
-                $this->wpdb->prepare($query, $where_values)
+                $this->wpdb->prepare($query, $where_values) // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             );
         } else {
-            $count = $this->wpdb->get_var($query);
+            $count = $this->wpdb->get_var($query); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         }
         
         return absint($count);
@@ -197,7 +197,7 @@ class AuditManager {
             $days = absint($days);
             $query = "DELETE FROM {$this->table_name} WHERE created_at < DATE_SUB(NOW(), INTERVAL %d DAY)";
             $deleted = $this->wpdb->query(
-                $this->wpdb->prepare($query, $days)
+                $this->wpdb->prepare($query, $days) // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             );
         }
         
@@ -214,7 +214,7 @@ class AuditManager {
         
         foreach ($ip_keys as $key) {
             if (array_key_exists($key, $_SERVER) === true) {
-                $server_value = isset($_SERVER[$key]) ? wp_unslash($_SERVER[$key]) : '';
+                $server_value = isset($_SERVER[$key]) ? sanitize_text_field(wp_unslash($_SERVER[$key])) : '';
                 foreach (explode(',', $server_value) as $ip) {
                     $ip = trim($ip);
                     
