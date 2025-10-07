@@ -548,7 +548,7 @@ class DatabaseManager {
                     $note->edit_link = get_edit_post_link($note->post_id);
                 }
             } else {
-                $note->post_title = esc_html__('Dashboard Note', 'notes-manager');
+                $note->post_title = esc_html__('Dashboard Note', 'wp-notes-manager');
                 $note->post_type = 'dashboard';
                 $note->post_status = 'publish';
                 $note->edit_link = admin_url('admin.php?page=wpnm-dashboard');
@@ -659,7 +659,7 @@ class DatabaseManager {
                     $note->edit_link = get_edit_post_link($note->post_id);
                 }
             } else {
-                $note->post_title = esc_html__('Dashboard Note', 'notes-manager');
+                $note->post_title = esc_html__('Dashboard Note', 'wp-notes-manager');
                 $note->post_type = 'dashboard';
                 $note->post_status = 'publish';
                 $note->edit_link = admin_url('admin.php?page=wpnm-dashboard');
@@ -706,7 +706,7 @@ class DatabaseManager {
                     $note->edit_link = get_edit_post_link($note->post_id);
                 }
             } else {
-                $note->post_title = esc_html__('Dashboard Note', 'notes-manager');
+                $note->post_title = esc_html__('Dashboard Note', 'wp-notes-manager');
                 $note->post_type = 'dashboard';
                 $note->post_status = 'publish';
                 $note->edit_link = admin_url('admin.php?page=wpnm-dashboard');

@@ -92,15 +92,15 @@ class AssetManager {
                 'users' => $users_list,
                 'stages' => $stages_list,
                 'strings' => [
-                    'confirm_delete' => esc_html__('Are you sure you want to delete this note?', 'notes-manager'),
-                    'confirm_archive' => esc_html__('Are you sure you want to archive this note?', 'notes-manager'),
-                    'error_occurred' => esc_html__('An error occurred. Please try again.', 'notes-manager'),
-                    'note_added' => esc_html__('Note added successfully!', 'notes-manager'),
-                    'note_updated' => esc_html__('Note updated successfully!', 'notes-manager'),
-                    'note_deleted' => esc_html__('Note deleted successfully!', 'notes-manager'),
-                    'note_archived' => esc_html__('Note archived successfully!', 'notes-manager'),
-                    'loading' => esc_html__('Loading...', 'notes-manager'),
-                    'saving' => esc_html__('Saving...', 'notes-manager')
+                    'confirm_delete' => esc_html__('Are you sure you want to delete this note?', 'wp-notes-manager'),
+                    'confirm_archive' => esc_html__('Are you sure you want to archive this note?', 'wp-notes-manager'),
+                    'error_occurred' => esc_html__('An error occurred. Please try again.', 'wp-notes-manager'),
+                    'note_added' => esc_html__('Note added successfully!', 'wp-notes-manager'),
+                    'note_updated' => esc_html__('Note updated successfully!', 'wp-notes-manager'),
+                    'note_deleted' => esc_html__('Note deleted successfully!', 'wp-notes-manager'),
+                    'note_archived' => esc_html__('Note archived successfully!', 'wp-notes-manager'),
+                    'loading' => esc_html__('Loading...', 'wp-notes-manager'),
+                    'saving' => esc_html__('Saving...', 'wp-notes-manager')
                 ]
             ]);
         }
@@ -135,9 +135,9 @@ class AssetManager {
                 'ajax_url' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('wpnm_frontend_nonce'),
                 'strings' => [
-                    'confirm_delete' => esc_html__('Are you sure you want to delete this note?', 'notes-manager'),
-                    'error_occurred' => esc_html__('An error occurred. Please try again.', 'notes-manager'),
-                    'note_added' => esc_html__('Note added successfully!', 'notes-manager')
+                    'confirm_delete' => esc_html__('Are you sure you want to delete this note?', 'wp-notes-manager'),
+                    'error_occurred' => esc_html__('An error occurred. Please try again.', 'wp-notes-manager'),
+                    'note_added' => esc_html__('Note added successfully!', 'wp-notes-manager')
                 ]
             ]);
         }

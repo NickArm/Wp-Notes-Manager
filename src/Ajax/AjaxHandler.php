@@ -105,14 +105,14 @@ class AjaxHandler {
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
             // Debug log removed for production
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
             return;
         }
         
         // Check user permissions
         if (!current_user_can('edit_posts')) {
             // Debug log removed for production
-            wp_send_json_error(['message' => esc_html__('You do not have permission to add notes.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to add notes.', 'wp-notes-manager')]);
             return;
         }
         
@@ -131,21 +131,21 @@ class AjaxHandler {
         
         // Validate required fields
         if (empty($note_data['title']) || empty($note_data['content'])) {
-            wp_send_json_error(['message' => esc_html__('Title and content are required.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Title and content are required.', 'wp-notes-manager')]);
             return;
         }
         
         // Validate note type
         $allowed_types = ['dashboard', 'post', 'page'];
         if (!in_array($note_data['note_type'], $allowed_types)) {
-            wp_send_json_error(['message' => esc_html__('Invalid note type.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Invalid note type.', 'wp-notes-manager')]);
             return;
         }
         
         // Validate priority
         $allowed_priorities = ['low', 'medium', 'high', 'urgent'];
         if (!in_array($note_data['priority'], $allowed_priorities)) {
-            wp_send_json_error(['message' => esc_html__('Invalid priority level.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Invalid priority level.', 'wp-notes-manager')]);
             return;
         }
         
@@ -168,11 +168,11 @@ class AjaxHandler {
             }
             
             wp_send_json_success([
-                'message' => esc_html__('Note added successfully!', 'notes-manager'),
+                'message' => esc_html__('Note added successfully!', 'wp-notes-manager'),
                 'note' => $note
             ]);
         } else {
-            wp_send_json_error(['message' => esc_html__('Failed to add note.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Failed to add note.', 'wp-notes-manager')]);
         }
     }
     
@@ -182,31 +182,31 @@ class AjaxHandler {
     public function updateNote() {
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
             return;
         }
         
         // Check user permissions
         if (!current_user_can('edit_posts')) {
-            wp_send_json_error(['message' => esc_html__('You do not have permission to update notes.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to update notes.', 'wp-notes-manager')]);
         }
         
         // Get note ID
         $note_id = isset($_POST['note_id']) ? absint($_POST['note_id']) : 0;
         
         if (!$note_id) {
-            wp_send_json_error(['message' => esc_html__('Invalid note ID.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Invalid note ID.', 'wp-notes-manager')]);
         }
         
         // Check if note exists
         $note = $this->getDatabase()->getNote($note_id);
         if (!$note) {
-            wp_send_json_error(['message' => esc_html__('Note not found.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Note not found.', 'wp-notes-manager')]);
         }
         
         // Check if current user is the owner of the note
         if ($note->author_id != get_current_user_id()) {
-            wp_send_json_error(['message' => esc_html__('You can only edit your own notes.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You can only edit your own notes.', 'wp-notes-manager')]);
         }
         
         // Sanitize input
@@ -225,7 +225,7 @@ class AjaxHandler {
         
         // Validate required fields
         if (empty($note_data['title']) || empty($note_data['content'])) {
-            wp_send_json_error(['message' => esc_html__('Title and content are required.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Title and content are required.', 'wp-notes-manager')]);
         }
         
         // Update note
@@ -266,11 +266,11 @@ class AjaxHandler {
             }
             
             wp_send_json_success([
-                'message' => esc_html__('Note updated successfully!', 'notes-manager'),
+                'message' => esc_html__('Note updated successfully!', 'wp-notes-manager'),
                 'note' => $updated_note
             ]);
         } else {
-            wp_send_json_error(['message' => esc_html__('Failed to update note.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Failed to update note.', 'wp-notes-manager')]);
         }
     }
     
@@ -280,31 +280,31 @@ class AjaxHandler {
     public function deleteNote() {
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
             return;
         }
         
         // Check user permissions
         if (!current_user_can('delete_posts')) {
-            wp_send_json_error(['message' => esc_html__('You do not have permission to delete notes.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to delete notes.', 'wp-notes-manager')]);
         }
         
         // Get note ID
         $note_id = isset($_POST['note_id']) ? absint($_POST['note_id']) : 0;
         
         if (!$note_id) {
-            wp_send_json_error(['message' => esc_html__('Invalid note ID.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Invalid note ID.', 'wp-notes-manager')]);
         }
         
         // Check if note exists
         $note = $this->getDatabase()->getNote($note_id);
         if (!$note) {
-            wp_send_json_error(['message' => esc_html__('Note not found.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Note not found.', 'wp-notes-manager')]);
         }
         
         // Check if current user is the owner of the note
         if ($note->author_id != get_current_user_id()) {
-            wp_send_json_error(['message' => esc_html__('You can only delete your own notes.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You can only delete your own notes.', 'wp-notes-manager')]);
         }
         
         // Delete note
@@ -312,10 +312,10 @@ class AjaxHandler {
         
         if ($result) {
             wp_send_json_success([
-                'message' => esc_html__('Note deleted successfully!', 'notes-manager')
+                'message' => esc_html__('Note deleted successfully!', 'wp-notes-manager')
             ]);
         } else {
-            wp_send_json_error(['message' => esc_html__('Failed to delete note.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Failed to delete note.', 'wp-notes-manager')]);
         }
     }
     
@@ -325,31 +325,31 @@ class AjaxHandler {
     public function archiveNote() {
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
             return;
         }
         
         // Check user permissions
         if (!current_user_can('edit_posts')) {
-            wp_send_json_error(['message' => esc_html__('You do not have permission to archive notes.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to archive notes.', 'wp-notes-manager')]);
         }
         
         // Get note ID
         $note_id = isset($_POST['note_id']) ? absint($_POST['note_id']) : 0;
         
         if (!$note_id) {
-            wp_send_json_error(['message' => esc_html__('Invalid note ID.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Invalid note ID.', 'wp-notes-manager')]);
         }
         
         // Check if note exists
         $note = $this->getDatabase()->getNote($note_id);
         if (!$note) {
-            wp_send_json_error(['message' => esc_html__('Note not found.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Note not found.', 'wp-notes-manager')]);
         }
         
         // Check if current user is the owner of the note
         if ($note->author_id != get_current_user_id()) {
-            wp_send_json_error(['message' => esc_html__('You can only archive your own notes.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You can only archive your own notes.', 'wp-notes-manager')]);
         }
         
         // Archive note
@@ -357,10 +357,10 @@ class AjaxHandler {
         
         if ($result) {
             wp_send_json_success([
-                'message' => esc_html__('Note archived successfully!', 'notes-manager')
+                'message' => esc_html__('Note archived successfully!', 'wp-notes-manager')
             ]);
         } else {
-            wp_send_json_error(['message' => esc_html__('Failed to archive note.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Failed to archive note.', 'wp-notes-manager')]);
         }
     }
     
@@ -370,19 +370,19 @@ class AjaxHandler {
     public function restoreNote() {
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
         }
         
         // Check user permissions
         if (!current_user_can('edit_posts')) {
-            wp_send_json_error(['message' => esc_html__('You do not have permission to restore notes.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to restore notes.', 'wp-notes-manager')]);
         }
         
         // Get note ID
         $note_id = isset($_POST['note_id']) ? absint($_POST['note_id']) : 0;
         
         if (!$note_id) {
-            wp_send_json_error(['message' => esc_html__('Invalid note ID.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Invalid note ID.', 'wp-notes-manager')]);
         }
         
         // Restore note
@@ -390,10 +390,10 @@ class AjaxHandler {
         
         if ($result) {
             wp_send_json_success([
-                'message' => esc_html__('Note restored successfully!', 'notes-manager')
+                'message' => esc_html__('Note restored successfully!', 'wp-notes-manager')
             ]);
         } else {
-            wp_send_json_error(['message' => esc_html__('Failed to restore note.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Failed to restore note.', 'wp-notes-manager')]);
         }
     }
     
@@ -403,12 +403,12 @@ class AjaxHandler {
     public function getNotes() {
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
         }
         
         // Check user permissions
         if (!current_user_can('read')) {
-            wp_send_json_error(['message' => esc_html__('You do not have permission to view notes.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to view notes.', 'wp-notes-manager')]);
         }
         
         // Get parameters
@@ -420,7 +420,7 @@ class AjaxHandler {
         // Validate note type
         $allowed_types = ['dashboard', 'post', 'page'];
         if (!in_array($note_type, $allowed_types)) {
-            wp_send_json_error(['message' => esc_html__('Invalid note type.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Invalid note type.', 'wp-notes-manager')]);
         }
         
         // Get notes
@@ -438,19 +438,19 @@ class AjaxHandler {
     public function getNote() {
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
         }
         
         // Check user permissions
         if (!current_user_can('read')) {
-            wp_send_json_error(['message' => esc_html__('You do not have permission to view notes.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to view notes.', 'wp-notes-manager')]);
         }
         
         // Get note ID
         $note_id = isset($_POST['note_id']) ? absint($_POST['note_id']) : 0;
         
         if (!$note_id) {
-            wp_send_json_error(['message' => esc_html__('Invalid note ID.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Invalid note ID.', 'wp-notes-manager')]);
         }
         
         // Get note
@@ -461,7 +461,7 @@ class AjaxHandler {
                 'note' => $note
             ]);
         } else {
-            wp_send_json_error(['message' => esc_html__('Note not found.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Note not found.', 'wp-notes-manager')]);
         }
     }
     
@@ -471,12 +471,12 @@ class AjaxHandler {
     public function getStats() {
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
         }
         
         // Check user permissions
         if (!current_user_can('read')) {
-            wp_send_json_error(['message' => esc_html__('You do not have permission to view statistics.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to view statistics.', 'wp-notes-manager')]);
         }
         
         // Get statistics
@@ -493,13 +493,13 @@ class AjaxHandler {
     public function saveLayoutPreference() {
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
             return;
         }
         
         // Check user permissions
         if (!current_user_can('edit_posts')) {
-            wp_send_json_error(['message' => esc_html__('You do not have permission to save preferences.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to save preferences.', 'wp-notes-manager')]);
             return;
         }
         
@@ -507,7 +507,7 @@ class AjaxHandler {
         $valid_layouts = ['list', '2-columns', '3-columns'];
         
         if (!in_array($layout, $valid_layouts)) {
-            wp_send_json_error(['message' => esc_html__('Invalid layout preference.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Invalid layout preference.', 'wp-notes-manager')]);
             return;
         }
         
@@ -516,7 +516,7 @@ class AjaxHandler {
         update_user_meta($user_id, 'wpnm_notes_layout', $layout);
         
         wp_send_json_success([
-            'message' => esc_html__('Layout preference saved successfully!', 'notes-manager'),
+            'message' => esc_html__('Layout preference saved successfully!', 'wp-notes-manager'),
             'layout' => $layout
         ]);
     }
@@ -527,7 +527,7 @@ class AjaxHandler {
     public function getCurrentPostId() {
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_frontend_nonce')) {
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
             return;
         }
         
@@ -542,7 +542,7 @@ class AjaxHandler {
                 'post_type' => get_post_type($post_id)
             ]);
         } else {
-            wp_send_json_error(['message' => esc_html__('Could not determine post ID from URL.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Could not determine post ID from URL.', 'wp-notes-manager')]);
         }
     }
 }

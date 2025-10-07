@@ -239,13 +239,13 @@ class AuditManager {
     public function ajaxGetAuditLogs() {
         // Check permissions
         if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => esc_html__('You do not have permission to view audit logs.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to view audit logs.', 'wp-notes-manager')]);
         }
         
         // Verify nonce
         $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
         if (!wp_verify_nonce($nonce, 'wpnm_admin_nonce')) {
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
         }
         
         $note_id = isset($_POST['note_id']) ? absint($_POST['note_id']) : null;
@@ -268,13 +268,13 @@ class AuditManager {
     public function ajaxClearAuditLogs() {
         // Check permissions
         if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => esc_html__('You do not have permission to clear audit logs.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to clear audit logs.', 'wp-notes-manager')]);
         }
         
         // Verify nonce
         $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
         if (!wp_verify_nonce($nonce, 'wpnm_admin_nonce')) {
-            wp_send_json_error(['message' => esc_html__('Security check failed.', 'notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
         }
         
         $days = isset($_POST['days']) ? absint($_POST['days']) : null;
@@ -282,7 +282,7 @@ class AuditManager {
         
         wp_send_json_success([
             // translators: %d is the number of deleted log entries
-            'message' => sprintf(esc_html__('%d audit log entries cleared.', 'notes-manager'), $deleted),
+            'message' => sprintf(esc_html__('%d audit log entries cleared.', 'wp-notes-manager'), $deleted),
             'deleted' => $deleted
         ]);
     }
@@ -297,19 +297,19 @@ class AuditManager {
     public function formatAction($action, $details) {
         switch ($action) {
             case 'note_created':
-                return esc_html__('Note created', 'notes-manager');
+                return esc_html__('Note created', 'wp-notes-manager');
                 
             case 'note_updated':
-                return esc_html__('Note updated', 'notes-manager');
+                return esc_html__('Note updated', 'wp-notes-manager');
                 
             case 'note_deleted':
-                return esc_html__('Note deleted', 'notes-manager');
+                return esc_html__('Note deleted', 'wp-notes-manager');
                 
             case 'note_archived':
-                return esc_html__('Note archived', 'notes-manager');
+                return esc_html__('Note archived', 'wp-notes-manager');
                 
             case 'note_restored':
-                return esc_html__('Note restored', 'notes-manager');
+                return esc_html__('Note restored', 'wp-notes-manager');
                 
             case 'assignment_changed':
                 $old_user = $details['old_assigned_to'] ? get_user_by('id', $details['old_assigned_to']) : null;
@@ -317,21 +317,21 @@ class AuditManager {
                 
                 if ($old_user && $new_user) {
                     // translators: %1$s is the old user name, %2$s is the new user name
-                    return sprintf(esc_html__('Assignment changed from %1$s to %2$s', 'notes-manager'), $old_user->display_name, $new_user->display_name);
+                    return sprintf(esc_html__('Assignment changed from %1$s to %2$s', 'wp-notes-manager'), $old_user->display_name, $new_user->display_name);
                 } elseif ($new_user) {
                     // translators: %s is the user name
-                    return sprintf(esc_html__('Assigned to %s', 'notes-manager'), $new_user->display_name);
+                    return sprintf(esc_html__('Assigned to %s', 'wp-notes-manager'), $new_user->display_name);
                 } elseif ($old_user) {
                     // translators: %s is the user name
-                    return sprintf(esc_html__('Unassigned from %s', 'notes-manager'), $old_user->display_name);
+                    return sprintf(esc_html__('Unassigned from %s', 'wp-notes-manager'), $old_user->display_name);
                 }
-                return esc_html__('Assignment changed', 'notes-manager');
+                return esc_html__('Assignment changed', 'wp-notes-manager');
                 
             case 'stage_changed':
                 $old_stage = $details['old_stage'] ?? 'None';
                 $new_stage = $details['new_stage'] ?? 'None';
                 // translators: %1$s is the old stage name, %2$s is the new stage name
-                return sprintf(esc_html__('Stage changed from %1$s to %2$s', 'notes-manager'), $old_stage, $new_stage);
+                return sprintf(esc_html__('Stage changed from %1$s to %2$s', 'wp-notes-manager'), $old_stage, $new_stage);
                 
             default:
                 return ucfirst(str_replace('_', ' ', $action));
