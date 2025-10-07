@@ -1,4 +1,4 @@
-=== WP Notes Manager ===
+=== Notes Manager ===
 Contributors: nickarm
 Tags: notes, task management, collaboration, todo, productivity
 Requires at least: 5.0
@@ -12,7 +12,7 @@ A powerful collaborative notes and task management system for WordPress. Perfect
 
 == Description ==
 
-WP Notes Manager transforms your WordPress site into a collaborative workspace where users can create, assign, and manage notes and tasks efficiently. Whether you're running a team blog, managing projects, or need a simple task management system, this plugin provides all the tools you need.
+Notes Manager transforms your WordPress site into a collaborative workspace where users can create, assign, and manage notes and tasks efficiently. Whether you're running a team blog, managing projects, or need a simple task management system, this plugin provides all the tools you need.
 
 = Key Features =
 
