@@ -107,7 +107,8 @@ class WPNotesManager {
     }
     
     public function loadTextDomain() {
-        load_plugin_textdomain('wp-notes-manager', false, dirname(plugin_basename(__FILE__)) . '/languages');
+        // WordPress.org automatically loads translations for plugins
+        // No manual load_plugin_textdomain() needed since WP 4.6
     }
     
     public function initComponents() {
