@@ -1,9 +1,25 @@
 # Changelog
 
-All notable changes to WP Notes Manager will be documented in this file.
+All notable changes to Notes Manager will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.1.1] - 2025-01-07
+
+### Fixed
+- **WordPress.org Compliance**
+  - Fixed Text Domain to match plugin slug (wp-notes-manager)
+  - Changed plugin name from "WP Notes Manager" to "Notes Manager" to comply with trademark restrictions
+  - Updated all internationalization strings to use correct text domain
+  - Resolved Plugin Check errors for WordPress.org submission
+
+### Changed
+- **Plugin Branding**
+  - Plugin display name: "Notes Manager" (removed "WP" prefix)
+  - Plugin slug remains: wp-notes-manager (folder name)
+  - Text domain: wp-notes-manager (matches slug)
+  - All documentation updated to reflect new name
 
 ## [1.1.0] - 2024-10-07
 
@@ -224,4 +240,4 @@ This plugin is licensed under the GPL v2 or later.
 
 ---
 
-**WP Notes Manager** - Efficient note management for WordPress teams.
+**Notes Manager** - Efficient note management for WordPress teams.

@@ -4,7 +4,7 @@ Tags: notes, task management, collaboration, todo, productivity
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -114,6 +114,12 @@ Yes! All data is stored in your WordPress database. No external services are use
 
 == Changelog ==
 
+= 1.1.1 - 2025-01-07 =
+* Fixed: Text Domain to match plugin slug (wp-notes-manager) for WordPress.org compliance
+* Fixed: Changed plugin name from "WP Notes Manager" to "Notes Manager" to comply with trademark restrictions
+* Fixed: All internationalization strings updated to use correct text domain
+* Improved: WordPress.org Plugin Check compliance - all errors resolved
+
 = 1.0.0 =
 * Initial release
 * Collaborative notes system
@@ -129,8 +135,11 @@ Yes! All data is stored in your WordPress database. No external services are use
 
 == Upgrade Notice ==
 
+= 1.1.1 =
+Critical WordPress.org compliance update. Plugin name changed to "Notes Manager" and text domain fixed. Update recommended before submitting to WordPress.org.
+
 = 1.0.0 =
-Initial release of WP Notes Manager. Perfect for teams and project management.
+Initial release of Notes Manager. Perfect for teams and project management.
 
 == Support ==
 

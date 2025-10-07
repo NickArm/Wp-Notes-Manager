@@ -3,7 +3,7 @@
  * Plugin Name: Notes Manager
  * Plugin URI: https://github.com/NickArm/Wp-Notes-Manager
  * Description: A comprehensive note management system for WordPress that helps teams organize, track, and manage notes efficiently.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: NickArm
  * Author URI: https://github.com/NickArm
  * License: GPL v2 or later
@@ -14,7 +14,7 @@
  * Requires PHP: 7.4
  * 
  * @package WPNotesManager
- * @version 1.1.0
+ * @version 1.1.1
  */
 
 // Prevent direct access
@@ -23,7 +23,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('WPNM_VERSION', '1.1.0');
+define('WPNM_VERSION', '1.1.1');
 define('WPNM_PLUGIN_FILE', __FILE__);
 define('WPNM_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WPNM_PLUGIN_URL', plugin_dir_url(__FILE__));
