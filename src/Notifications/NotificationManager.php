@@ -129,7 +129,7 @@ class NotificationManager {
      */
     private function generateDeadlineEmailContent($deadlines, $user) {
         $site_name = get_bloginfo('name');
-        $admin_url = esc_url(admin_url('admin.php?page=wpnm-all-notes'));
+        $admin_url = admin_url('admin.php?page=wpnm-all-notes');
         
         $html = '<!DOCTYPE html>';
         $html .= '<html><head><meta charset="UTF-8"><style>';
@@ -161,7 +161,7 @@ class NotificationManager {
             $deadline_timestamp = strtotime($note->deadline);
             $is_overdue = $deadline_timestamp < time();
             $deadline_class = $is_overdue ? 'deadline-red' : 'deadline-green';
-            $deadline_text = esc_html(date_i18n(get_option('date_format')) . ' ' . get_option('time_format'), $deadline_timestamp);
+            $deadline_text = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), $deadline_timestamp);
             
             $html .= '<div class="note">';
             $html .= '<div class="note-title">' . esc_html($note->title) . '</div>';
@@ -216,29 +216,29 @@ class NotificationManager {
             $preferences = $this->getDefaultNotificationPreferences();
         }
         ?>
-        <h3><?php esc_html_e('WP Notes Manager Notifications', 'wp-notes-manager'); ?></h3>
+        <h3><?php esc_htmlesc_html_e('WP Notes Manager Notifications', 'wp-notes-manager'); ?></h3>
         <table class="form-table">
             <tr>
-                <th scope="row"><?php esc_html_e('Deadline Notifications', 'wp-notes-manager'); ?></th>
+                <th scope="row"><?php esc_htmlesc_html_e('Deadline Notifications', 'wp-notes-manager'); ?></th>
                 <td>
                     <fieldset>
                         <label>
                             <input type="checkbox" name="wpnm_notifications[deadlines][enabled]" value="1" 
                                    <?php checked(isset($preferences['deadlines']['enabled']) && $preferences['deadlines']['enabled']); ?> />
-                            <?php esc_html_e('Enable deadline notifications', 'wp-notes-manager'); ?>
+                            <?php esc_htmlesc_html_e('Enable deadline notifications', 'wp-notes-manager'); ?>
                         </label>
                         <br><br>
                         <label>
-                            <?php esc_html_e('Send notifications for deadlines within:', 'wp-notes-manager'); ?>
+                            <?php esc_htmlesc_html_e('Send notifications for deadlines within:', 'wp-notes-manager'); ?>
                             <select name="wpnm_notifications[deadlines][days_ahead]">
-                                <option value="1" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 1); ?>><?php esc_html_e('1 day', 'wp-notes-manager'); ?></option>
-                                <option value="3" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 3); ?>><?php esc_html_e('3 days (default)', 'wp-notes-manager'); ?></option>
-                                <option value="7" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 7); ?>><?php esc_html_e('7 days', 'wp-notes-manager'); ?></option>
-                                <option value="14" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 14); ?>><?php esc_html_e('14 days', 'wp-notes-manager'); ?></option>
+                                <option value="1" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 1); ?>><?php esc_htmlesc_html_e('1 day', 'wp-notes-manager'); ?></option>
+                                <option value="3" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 3); ?>><?php esc_htmlesc_html_e('3 days (default)', 'wp-notes-manager'); ?></option>
+                                <option value="7" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 7); ?>><?php esc_htmlesc_html_e('7 days', 'wp-notes-manager'); ?></option>
+                                <option value="14" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 14); ?>><?php esc_htmlesc_html_e('14 days', 'wp-notes-manager'); ?></option>
                             </select>
                         </label>
                         <p class="description">
-                            <?php esc_html_e('Receive daily email notifications for tasks with upcoming deadlines.', 'wp-notes-manager'); ?>
+                            <?php esc_htmlesc_html_e('Receive daily email notifications for tasks with upcoming deadlines.', 'wp-notes-manager'); ?>
                         </p>
                     </fieldset>
                 </td>

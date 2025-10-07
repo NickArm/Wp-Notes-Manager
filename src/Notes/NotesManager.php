@@ -238,8 +238,8 @@ class NotesManager {
                         
                         echo sprintf(
                             '<span class="deadline-date %s">%s</span>',
-                            $deadline_class,
-                            esc_html(date_i18n(get_option('date_format')) . ' ' . get_option('time_format'), $deadline_timestamp)
+                            esc_attr($deadline_class),
+                            esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), $deadline_timestamp))
                         );
                         ?>
                     </div>
@@ -441,7 +441,7 @@ class NotesManager {
                     if ($preferences && isset($preferences['deadlines']['enabled'])) {
                         $days_ahead = $preferences['deadlines']['days_ahead'] ?? 3;
                         // translators: %d is the number of days
-                        printf(esc_html__('Receiving daily notifications for tasks due within %d days.', 'wp-notes-manager'), $days_ahead);
+                        printf(esc_html__('Receiving daily notifications for tasks due within %d days.', 'wp-notes-manager'), esc_html($days_ahead));
                     } else {
                         esc_html_e('Configure email notifications in your profile settings.', 'wp-notes-manager');
                     }
@@ -599,7 +599,7 @@ class NotesManager {
             
             if ($notes_count > 0) {
                 // translators: %d is the number of notes
-                echo '<span style="color: #0073aa;">' . sprintf(_n('%d note', '%d notes', $notes_count, 'wp-notes-manager'), $notes_count) . '</span>';
+                echo '<span style="color: #0073aa;">' . esc_html(sprintf(_n('%d note', '%d notes', $notes_count, 'wp-notes-manager'), $notes_count)) . '</span>';
             } else {
                 echo '<span style="color: #999;">' . esc_html__('No notes', 'wp-notes-manager') . '</span>';
             }
