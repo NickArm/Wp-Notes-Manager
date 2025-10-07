@@ -261,8 +261,8 @@ class AdminManager {
         // Get statistics
         $stats = $this->getDatabase()->getStats();
         
-        // Get recent notes
-        $recent_notes = $this->getDatabase()->getDashboardNotes(10);
+        // Get recent notes from all types
+        $recent_notes = $this->getDatabase()->getAllNotes(10);
         
         ?>
         <div class="wrap">

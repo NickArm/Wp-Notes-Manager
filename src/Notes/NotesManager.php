@@ -340,7 +340,8 @@ class NotesManager {
      * Render dashboard widget
      */
     public function renderDashboardWidget() {
-        $notes = $this->getDatabase()->getDashboardNotes(5);
+        // Get recent notes from all types (dashboard, post, page)
+        $notes = $this->getDatabase()->getAllNotes(5);
         
         if (empty($notes)) {
             echo '<p>' . esc_html__('No notes yet.', 'wp-notes-manager') . '</p>';
@@ -364,7 +365,21 @@ class NotesManager {
     private function renderDashboardNoteItem($note) {
         $author = get_user_by('id', $note->author_id);
         $author_name = $author ? $author->display_name : esc_html__('Unknown', 'wp-notes-manager');
-        $created_date = esc_html(date_i18n(get_option('date_format')), strtotime($note->created_at));
+        $created_date = esc_html(date_i18n(get_option('date_format'), strtotime($note->created_at)));
+        
+        // Get context info for post/page notes
+        $context_info = '';
+        if ($note->note_type !== 'dashboard' && !empty($note->post_id)) {
+            $post = get_post($note->post_id);
+            if ($post) {
+                $edit_link = get_edit_post_link($note->post_id);
+                $context_info = sprintf(
+                    ' <a href="%s" style="color: #0073aa; text-decoration: none;">→ %s</a>',
+                    esc_url($edit_link),
+                    esc_html($post->post_title)
+                );
+            }
+        }
         
         ?>
         <div class="wpnm-dashboard-note" style="border-left: 3px solid <?php echo esc_attr($note->color); ?>; padding: 8px; margin-bottom: 10px; background: #f9f9f9;">
@@ -372,6 +387,11 @@ class NotesManager {
             <span class="wpnm-note-priority <?php echo esc_attr($note->priority); ?>" style="float: right; padding: 2px 6px; border-radius: 3px; font-size: 11px;">
                 <?php echo esc_html(ucfirst($note->priority)); ?>
             </span>
+            <?php if ($context_info): ?>
+                <div style="font-size: 11px; color: #0073aa; margin-bottom: 5px;">
+                    <?php echo wp_kses_post($context_info); ?>
+                </div>
+            <?php endif; ?>
             <p style="margin: 5px 0; font-size: 13px;"><?php echo wp_kses_post(wp_trim_words($note->content, 20)); ?></p>
             <small style="color: #666;">
                 <?php
