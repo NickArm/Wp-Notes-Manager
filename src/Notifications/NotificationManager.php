@@ -111,7 +111,7 @@ class NotificationManager {
         }
         
         // translators: %d is the number of tasks
-        $subject = sprintf(__('Upcoming Deadlines - %d Tasks Requiring Attention', 'wp-notes-manager'), count($deadlines));
+        $subject = sprintf(esc_html__('Upcoming Deadlines - %d Tasks Requiring Attention', 'wp-notes-manager'), count($deadlines));
         
         // Prepare email content
         $content = $this->generateDeadlineEmailContent($deadlines, $user);
@@ -129,7 +129,7 @@ class NotificationManager {
      */
     private function generateDeadlineEmailContent($deadlines, $user) {
         $site_name = get_bloginfo('name');
-        $admin_url = admin_url('admin.php?page=wpnm-all-notes');
+        $admin_url = esc_url(admin_url('admin.php?page=wpnm-all-notes'));
         
         $html = '<!DOCTYPE html>';
         $html .= '<html><head><meta charset="UTF-8"><style>';
@@ -148,36 +148,36 @@ class NotificationManager {
         
         $html .= '<div class="header">';
         // translators: %s is the site name
-        $html .= '<h1>' . sprintf(__('Upcoming Deadlines - %s', 'wp-notes-manager'), $site_name) . '</h1>';
+        $html .= '<h1>' . sprintf(esc_html__('Upcoming Deadlines - %s', 'wp-notes-manager'), $site_name) . '</h1>';
         $html .= '</div>';
         
         $html .= '<div class="content">';
         // translators: %s is the user name
-        $html .= '<p>' . sprintf(__('Hello %s,', 'wp-notes-manager'), esc_html($user->display_name)) . '</p>';
+        $html .= '<p>' . sprintf(esc_html__('Hello %s,', 'wp-notes-manager'), esc_html($user->display_name)) . '</p>';
         // translators: %d is the number of tasks
-        $html .= '<p>' . sprintf(__('You have %d tasks with upcoming deadlines:', 'wp-notes-manager'), count($deadlines)) . '</p>';
+        $html .= '<p>' . sprintf(esc_html__('You have %d tasks with upcoming deadlines:', 'wp-notes-manager'), count($deadlines)) . '</p>';
         
         foreach ($deadlines as $note) {
             $deadline_timestamp = strtotime($note->deadline);
             $is_overdue = $deadline_timestamp < time();
             $deadline_class = $is_overdue ? 'deadline-red' : 'deadline-green';
-            $deadline_text = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), $deadline_timestamp);
+            $deadline_text = esc_html(date_i18n(get_option('date_format')) . ' ' . get_option('time_format'), $deadline_timestamp);
             
             $html .= '<div class="note">';
             $html .= '<div class="note-title">' . esc_html($note->title) . '</div>';
             
             $html .= '<div class="note-meta">';
-            $html .= '<strong>' . __('Deadline:', 'wp-notes-manager') . '</strong> ';
+            $html .= '<strong>' . esc_html__('Deadline:', 'wp-notes-manager') . '</strong> ';
             $html .= '<span class="' . $deadline_class . '">' . $deadline_text . '</span>';
             
             if ($note->stage_name) {
-                $html .= '<br><strong>' . __('Stage:', 'wp-notes-manager') . '</strong> ' . esc_html($note->stage_name);
+                $html .= '<br><strong>' . esc_html__('Stage:', 'wp-notes-manager') . '</strong> ' . esc_html($note->stage_name);
             }
             
             if ($note->assigned_to && $note->assigned_to != $note->author_id) {
                 $assigned_user = get_user_by('id', $note->assigned_to);
                 if ($assigned_user) {
-                    $html .= '<br><strong>' . __('Assigned to:', 'wp-notes-manager') . '</strong> ' . esc_html($assigned_user->display_name);
+                    $html .= '<br><strong>' . esc_html__('Assigned to:', 'wp-notes-manager') . '</strong> ' . esc_html($assigned_user->display_name);
                 }
             }
             
@@ -191,14 +191,15 @@ class NotificationManager {
         }
         
         $html .= '<p style="text-align: center;">';
-        $html .= '<a href="' . $admin_url . '" class="btn">' . __('View All Notes', 'wp-notes-manager') . '</a>';
+        $html .= '<a href="' . $admin_url . '" class="btn">' . esc_html__('View All Notes', 'wp-notes-manager') . '</a>';
         $html .= '</p>';
         
         $html .= '</div>';
         
         $html .= '<div class="footer">';
-        $html .= '<p>' . sprintf(__('This is an automated notification from %s', 'wp-notes-manager'), $site_name) . '</p>';
-        $html .= '<p>' . __('You received this email because you have deadline notifications enabled in your account settings.', 'wp-notes-manager') . '</p>';
+        // translators: %s is the site name
+        $html .= '<p>' . sprintf(esc_html__('This is an automated notification from %s', 'wp-notes-manager'), $site_name) . '</p>';
+        $html .= '<p>' . esc_html__('You received this email because you have deadline notifications enabled in your account settings.', 'wp-notes-manager') . '</p>';
         $html .= '</div>';
         
         $html .= '</body></html>';
@@ -215,29 +216,29 @@ class NotificationManager {
             $preferences = $this->getDefaultNotificationPreferences();
         }
         ?>
-        <h3><?php _e('WP Notes Manager Notifications', 'wp-notes-manager'); ?></h3>
+        <h3><?php esc_html_e('WP Notes Manager Notifications', 'wp-notes-manager'); ?></h3>
         <table class="form-table">
             <tr>
-                <th scope="row"><?php _e('Deadline Notifications', 'wp-notes-manager'); ?></th>
+                <th scope="row"><?php esc_html_e('Deadline Notifications', 'wp-notes-manager'); ?></th>
                 <td>
                     <fieldset>
                         <label>
                             <input type="checkbox" name="wpnm_notifications[deadlines][enabled]" value="1" 
                                    <?php checked(isset($preferences['deadlines']['enabled']) && $preferences['deadlines']['enabled']); ?> />
-                            <?php _e('Enable deadline notifications', 'wp-notes-manager'); ?>
+                            <?php esc_html_e('Enable deadline notifications', 'wp-notes-manager'); ?>
                         </label>
                         <br><br>
                         <label>
-                            <?php _e('Send notifications for deadlines within:', 'wp-notes-manager'); ?>
+                            <?php esc_html_e('Send notifications for deadlines within:', 'wp-notes-manager'); ?>
                             <select name="wpnm_notifications[deadlines][days_ahead]">
-                                <option value="1" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 1); ?>><?php _e('1 day', 'wp-notes-manager'); ?></option>
-                                <option value="3" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 3); ?>><?php _e('3 days (default)', 'wp-notes-manager'); ?></option>
-                                <option value="7" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 7); ?>><?php _e('7 days', 'wp-notes-manager'); ?></option>
-                                <option value="14" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 14); ?>><?php _e('14 days', 'wp-notes-manager'); ?></option>
+                                <option value="1" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 1); ?>><?php esc_html_e('1 day', 'wp-notes-manager'); ?></option>
+                                <option value="3" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 3); ?>><?php esc_html_e('3 days (default)', 'wp-notes-manager'); ?></option>
+                                <option value="7" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 7); ?>><?php esc_html_e('7 days', 'wp-notes-manager'); ?></option>
+                                <option value="14" <?php selected($preferences['deadlines']['days_ahead'] ?? 3, 14); ?>><?php esc_html_e('14 days', 'wp-notes-manager'); ?></option>
                             </select>
                         </label>
                         <p class="description">
-                            <?php _e('Receive daily email notifications for tasks with upcoming deadlines.', 'wp-notes-manager'); ?>
+                            <?php esc_html_e('Receive daily email notifications for tasks with upcoming deadlines.', 'wp-notes-manager'); ?>
                         </p>
                     </fieldset>
                 </td>
@@ -323,13 +324,13 @@ class NotificationManager {
     public function testNotification() {
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
-            wp_send_json_error(['message' => __('Security check failed.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
             return;
         }
         
         // Check permissions
         if (!current_user_can('edit_posts')) {
-            wp_send_json_error(['message' => __('You do not have permission to test notifications.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('You do not have permission to test notifications.', 'wp-notes-manager')]);
             return;
         }
         
@@ -339,7 +340,7 @@ class NotificationManager {
         $deadlines = $this->getUpcomingDeadlines($user_id, 30); // Get last 30 days for testing
         
         if (empty($deadlines)) {
-            wp_send_json_error(['message' => __('No upcoming deadlines found to test with. Create some notes with deadlines first.', 'wp-notes-manager')]);
+            wp_send_json_error(['message' => esc_html__('No upcoming deadlines found to test with. Create some notes with deadlines first.', 'wp-notes-manager')]);
             return;
         }
         
@@ -350,7 +351,7 @@ class NotificationManager {
         $this->sendDeadlineEmail($user_id, $test_deadlines);
         
         wp_send_json_success([
-            'message' => __('Test notification sent successfully! Check your email.', 'wp-notes-manager'),
+            'message' => esc_html__('Test notification sent successfully! Check your email.', 'wp-notes-manager'),
             'count' => count($test_deadlines)
         ]);
     }

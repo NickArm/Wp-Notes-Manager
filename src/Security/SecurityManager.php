@@ -155,7 +155,7 @@ class SecurityManager {
                                  wp_verify_nonce($nonce_value, 'wpnm_frontend_nonce');
                 
                 if (!$nonce_verified) {
-                    wp_send_json_error(['message' => __('Security check failed.', 'wp-notes-manager')]);
+                    wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
                 }
             }
         }
@@ -179,7 +179,7 @@ class SecurityManager {
                     set_transient($rate_limit_key, 1, 60); // 1 minute window
                 } else {
                     if ($requests >= 30) { // Max 30 requests per minute
-                        wp_send_json_error(['message' => __('Rate limit exceeded. Please try again later.', 'wp-notes-manager')]);
+                        wp_send_json_error(['message' => esc_html__('Rate limit exceeded. Please try again later.', 'wp-notes-manager')]);
                     }
                     set_transient($rate_limit_key, $requests + 1, 60);
                 }
@@ -195,7 +195,7 @@ class SecurityManager {
         $blocked_ips = get_option('wpnm_blocked_ips', []);
         
         if (in_array($ip_address, $blocked_ips)) {
-            wp_die(__('Access denied.', 'wp-notes-manager'), __('Access Denied', 'wp-notes-manager'), ['response' => 403]);
+            wp_die(esc_html__('Access denied.', 'wp-notes-manager'), esc_html__('Access Denied', 'wp-notes-manager'), ['response' => 403]);
         }
     }
     
@@ -328,7 +328,7 @@ class SecurityManager {
         if (isset($data['title'])) {
             $title = sanitize_text_field($data['title']);
             if (strlen($title) < 1 || strlen($title) > 255) {
-                wp_send_json_error(['message' => __('Title must be between 1 and 255 characters.', 'wp-notes-manager')]);
+                wp_send_json_error(['message' => esc_html__('Title must be between 1 and 255 characters.', 'wp-notes-manager')]);
             }
             $validated['title'] = $title;
         }
@@ -337,7 +337,7 @@ class SecurityManager {
         if (isset($data['content'])) {
             $content = wp_kses_post($data['content']);
             if (strlen($content) < 1 || strlen($content) > 10000) {
-                wp_send_json_error(['message' => __('Content must be between 1 and 10,000 characters.', 'wp-notes-manager')]);
+                wp_send_json_error(['message' => esc_html__('Content must be between 1 and 10,000 characters.', 'wp-notes-manager')]);
             }
             $validated['content'] = $content;
         }
@@ -346,7 +346,7 @@ class SecurityManager {
         if (isset($data['priority'])) {
             $allowed_priorities = ['low', 'medium', 'high', 'urgent'];
             if (!in_array($data['priority'], $allowed_priorities)) {
-                wp_send_json_error(['message' => __('Invalid priority level.', 'wp-notes-manager')]);
+                wp_send_json_error(['message' => esc_html__('Invalid priority level.', 'wp-notes-manager')]);
             }
             $validated['priority'] = $data['priority'];
         }
@@ -364,7 +364,7 @@ class SecurityManager {
         if (isset($data['note_type'])) {
             $allowed_types = ['dashboard', 'post', 'page'];
             if (!in_array($data['note_type'], $allowed_types)) {
-                wp_send_json_error(['message' => __('Invalid note type.', 'wp-notes-manager')]);
+                wp_send_json_error(['message' => esc_html__('Invalid note type.', 'wp-notes-manager')]);
             }
             $validated['note_type'] = $data['note_type'];
         }
@@ -373,7 +373,7 @@ class SecurityManager {
         if (isset($data['post_id']) && $data['post_id']) {
             $post_id = absint($data['post_id']);
             if (!$post_id || !get_post($post_id)) {
-                wp_send_json_error(['message' => __('Invalid post ID.', 'wp-notes-manager')]);
+                wp_send_json_error(['message' => esc_html__('Invalid post ID.', 'wp-notes-manager')]);
             }
             $validated['post_id'] = $post_id;
         }

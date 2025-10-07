@@ -4,16 +4,14 @@
  * Plugin URI: https://github.com/yourusername/wp-notes-manager
  * Description: A comprehensive note management system for WordPress that helps teams organize, track, and manage notes efficiently.
  * Version: 1.1.0
- * Author: Your Name
- * Author URI: https://yourwebsite.com
+ * Author: NickArm
+ * Author URI: https://github.com/NickArm
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wp-notes-manager
- * Domain Path: /languages
  * Requires at least: 5.0
  * Tested up to: 6.4
  * Requires PHP: 7.4
- * Network: false
  * 
  * @package WPNotesManager
  * @version 1.1.0

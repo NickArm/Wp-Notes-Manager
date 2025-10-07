@@ -79,7 +79,7 @@ class NotesManager {
         // Add to posts
         add_meta_box(
             'wpnm_post_notes',
-            __('Post Notes', 'wp-notes-manager'),
+            esc_html__('Post Notes', 'wp-notes-manager'),
             [$this, 'renderNotesMetaBox'],
             'post',
             'side',
@@ -89,7 +89,7 @@ class NotesManager {
         // Add to pages
         add_meta_box(
             'wpnm_page_notes',
-            __('Page Notes', 'wp-notes-manager'),
+            esc_html__('Page Notes', 'wp-notes-manager'),
             [$this, 'renderNotesMetaBox'],
             'page',
             'side',
@@ -112,36 +112,36 @@ class NotesManager {
         ?>
         <div id="wpnm-notes-container">
             <div class="wpnm-notes-form">
-                <h4><?php _e('Add New Note', 'wp-notes-manager'); ?></h4>
+                <h4><?php esc_html_e('Add New Note', 'wp-notes-manager'); ?></h4>
                 <p>
-                    <label for="wpnm-note-title"><?php _e('Title:', 'wp-notes-manager'); ?></label>
+                    <label for="wpnm-note-title"><?php esc_html_e('Title:', 'wp-notes-manager'); ?></label>
                     <input type="text" id="wpnm-note-title" name="wpnm_note_title" class="widefat" />
                 </p>
                 <p>
-                    <label for="wpnm-note-content"><?php _e('Content:', 'wp-notes-manager'); ?></label>
+                    <label for="wpnm-note-content"><?php esc_html_e('Content:', 'wp-notes-manager'); ?></label>
                     <textarea id="wpnm-note-content" name="wpnm_note_content" rows="3" class="widefat"></textarea>
                 </p>
                 <p>
-                    <label for="wpnm-note-priority"><?php _e('Priority:', 'wp-notes-manager'); ?></label>
+                    <label for="wpnm-note-priority"><?php esc_html_e('Priority:', 'wp-notes-manager'); ?></label>
                     <select id="wpnm-note-priority" name="wpnm_note_priority">
-                        <option value="low"><?php _e('Low', 'wp-notes-manager'); ?></option>
-                        <option value="medium" selected><?php _e('Medium', 'wp-notes-manager'); ?></option>
-                        <option value="high"><?php _e('High', 'wp-notes-manager'); ?></option>
-                        <option value="urgent"><?php _e('Urgent', 'wp-notes-manager'); ?></option>
+                        <option value="low"><?php esc_html_e('Low', 'wp-notes-manager'); ?></option>
+                        <option value="medium" selected><?php esc_html_e('Medium', 'wp-notes-manager'); ?></option>
+                        <option value="high"><?php esc_html_e('High', 'wp-notes-manager'); ?></option>
+                        <option value="urgent"><?php esc_html_e('Urgent', 'wp-notes-manager'); ?></option>
                     </select>
                 </p>
                 <!-- Color field removed -->
                 <p>
                     <button type="button" id="wpnm-add-note" class="button button-primary">
-                        <?php _e('Add Note', 'wp-notes-manager'); ?>
+                        <?php esc_html_e('Add Note', 'wp-notes-manager'); ?>
                     </button>
                 </p>
             </div>
             
             <div class="wpnm-notes-list">
-                <h4><?php _e('Existing Notes', 'wp-notes-manager'); ?></h4>
+                <h4><?php esc_html_e('Existing Notes', 'wp-notes-manager'); ?></h4>
                 <?php if (empty($notes)): ?>
-                    <p><?php _e('No notes yet.', 'wp-notes-manager'); ?></p>
+                    <p><?php esc_html_e('No notes yet.', 'wp-notes-manager'); ?></p>
                 <?php else: ?>
                     <div class="wpnm-notes-items">
                         <?php foreach ($notes as $note): ?>
@@ -207,8 +207,8 @@ class NotesManager {
      */
     private function renderNoteItem($note) {
         $author = get_user_by('id', $note->author_id);
-        $author_name = $author ? $author->display_name : __('Unknown', 'wp-notes-manager');
-        $created_date = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($note->created_at));
+        $author_name = $author ? $author->display_name : esc_html__('Unknown', 'wp-notes-manager');
+        $created_date = esc_html(date_i18n(get_option('date_format')) . ' ' . get_option('time_format'), strtotime($note->created_at));
         
         ?>
         <div class="wpnm-note-item" data-note-id="<?php echo esc_attr($note->id); ?>">
@@ -224,7 +224,7 @@ class NotesManager {
             <div class="wpnm-note-meta">
                 <?php
                 // translators: %1$s is the author name, %2$s is the creation date
-                printf(__('By %1$s on %2$s', 'wp-notes-manager'), esc_html($author_name), esc_html($created_date));
+                printf(esc_html__('By %1$s on %2$s', 'wp-notes-manager'), esc_html($author_name), esc_html($created_date));
                 ?>
                 
                 <?php if ($note->deadline): ?>
@@ -239,7 +239,7 @@ class NotesManager {
                         echo sprintf(
                             '<span class="deadline-date %s">%s</span>',
                             $deadline_class,
-                            date_i18n(get_option('date_format') . ' ' . get_option('time_format'), $deadline_timestamp)
+                            esc_html(date_i18n(get_option('date_format')) . ' ' . get_option('time_format'), $deadline_timestamp)
                         );
                         ?>
                     </div>
@@ -247,10 +247,10 @@ class NotesManager {
             </div>
             <div class="wpnm-note-actions">
                 <button type="button" class="button button-small wpnm-archive-note" data-note-id="<?php echo esc_attr($note->id); ?>">
-                    <?php _e('Archive', 'wp-notes-manager'); ?>
+                    <?php esc_html_e('Archive', 'wp-notes-manager'); ?>
                 </button>
                 <button type="button" class="button button-small wpnm-delete-note" data-note-id="<?php echo esc_attr($note->id); ?>">
-                    <?php _e('Delete', 'wp-notes-manager'); ?>
+                    <?php esc_html_e('Delete', 'wp-notes-manager'); ?>
                 </button>
             </div>
         </div>
@@ -308,10 +308,10 @@ class NotesManager {
         $wp_admin_bar->add_node([
             'id' => 'wpnm-notes',
             // translators: %d is the number of notes
-            'title' => sprintf(__('Notes (%d)', 'wp-notes-manager'), $notes_count),
-            'href' => admin_url('admin.php?page=wpnm-dashboard'),
+            'title' => sprintf(esc_html__('Notes (%d)', 'wp-notes-manager'), $notes_count),
+            'href' => esc_url(admin_url('admin.php?page=wpnm-dashboard')),
             'meta' => [
-                'title' => __('View Notes Dashboard', 'wp-notes-manager')
+                'title' => esc_html__('View Notes Dashboard', 'wp-notes-manager')
             ]
         ]);
     }
@@ -326,7 +326,7 @@ class NotesManager {
         
         wp_add_dashboard_widget(
             'wpnm_dashboard_widget',
-            __('Recent Notes', 'wp-notes-manager'),
+            esc_html__('Recent Notes', 'wp-notes-manager'),
             [$this, 'renderDashboardWidget']
         );
     }
@@ -338,8 +338,8 @@ class NotesManager {
         $notes = $this->getDatabase()->getDashboardNotes(5);
         
         if (empty($notes)) {
-            echo '<p>' . __('No notes yet.', 'wp-notes-manager') . '</p>';
-            echo '<p><a href="' . admin_url('admin.php?page=wpnm-dashboard') . '" class="button">' . __('Add Note', 'wp-notes-manager') . '</a></p>';
+            echo '<p>' . esc_html__('No notes yet.', 'wp-notes-manager') . '</p>';
+            echo '<p><a href="' . esc_url(admin_url('admin.php?page=wpnm-dashboard')) . '" class="button">' . esc_html__('Add Note', 'wp-notes-manager') . '</a></p>';
             return;
         }
         
@@ -348,7 +348,7 @@ class NotesManager {
             $this->renderDashboardNoteItem($note);
         }
         echo '</div>';
-        echo '<p><a href="' . admin_url('admin.php?page=wpnm-dashboard') . '" class="button">' . __('View All Notes', 'wp-notes-manager') . '</a></p>';
+        echo '<p><a href="' . esc_url(admin_url('admin.php?page=wpnm-dashboard')) . '" class="button">' . esc_html__('View All Notes', 'wp-notes-manager') . '</a></p>';
     }
     
     /**
@@ -358,8 +358,8 @@ class NotesManager {
      */
     private function renderDashboardNoteItem($note) {
         $author = get_user_by('id', $note->author_id);
-        $author_name = $author ? $author->display_name : __('Unknown', 'wp-notes-manager');
-        $created_date = date_i18n(get_option('date_format'), strtotime($note->created_at));
+        $author_name = $author ? $author->display_name : esc_html__('Unknown', 'wp-notes-manager');
+        $created_date = esc_html(date_i18n(get_option('date_format')), strtotime($note->created_at));
         
         ?>
         <div class="wpnm-dashboard-note" style="border-left: 3px solid <?php echo esc_attr($note->color); ?>; padding: 8px; margin-bottom: 10px; background: #f9f9f9;">
@@ -371,7 +371,7 @@ class NotesManager {
             <small style="color: #666;">
                 <?php
                 // translators: %1$s is the author name, %2$s is the creation date
-                printf(__('By %1$s on %2$s', 'wp-notes-manager'), esc_html($author_name), esc_html($created_date));
+                printf(esc_html__('By %1$s on %2$s', 'wp-notes-manager'), esc_html($author_name), esc_html($created_date));
                 ?>
             </small>
         </div>
@@ -388,7 +388,7 @@ class NotesManager {
         
         wp_add_dashboard_widget(
             'wpnm-deadline-widget',
-            __('Upcoming & Overdue Tasks', 'wp-notes-manager'),
+            esc_html__('Upcoming & Overdue Tasks', 'wp-notes-manager'),
             [$this, 'renderDeadlineDashboardWidget']
         );
     }
@@ -407,29 +407,29 @@ class NotesManager {
         <div class="wpnm-deadline-widget">
             <div class="wpnm-stats-grid">
                 <div class="wpnm-stat-item overdue">
-                    <h4><?php _e('Overdue', 'wp-notes-manager'); ?></h4>
-                    <div class="stat-number"><?php echo $overdue_count; ?></div>
-                    <p><?php _e('Tasks past deadline', 'wp-notes-manager'); ?></p>
+                    <h4><?php esc_html_e('Overdue', 'wp-notes-manager'); ?></h4>
+                    <div class="stat-number"><?php echo esc_html($overdue_count); ?></div>
+                    <p><?php esc_html_e('Tasks past deadline', 'wp-notes-manager'); ?></p>
                 </div>
                 
                 <div class="wpnm-stat-item upcoming">
-                    <h4><?php _e('Due Soon', 'wp-notes-manager'); ?></h4>
-                    <div class="stat-number"><?php echo $upcoming_count; ?></div>
-                    <p><?php _e('Tasks due in 7 days', 'wp-notes-manager'); ?></p>
+                    <h4><?php esc_html_e('Due Soon', 'wp-notes-manager'); ?></h4>
+                    <div class="stat-number"><?php echo esc_html($upcoming_count); ?></div>
+                    <p><?php esc_html_e('Tasks due in 7 days', 'wp-notes-manager'); ?></p>
                 </div>
             </div>
             
             <?php if ($overdue_count > 0 || $upcoming_count > 0): ?>
                 <div class="wpnm-widget-actions">
-                    <a href="<?php echo admin_url('admin.php?page=wpnm-all-notes'); ?>" class="button button-primary">
-                        <?php _e('View All Tasks', 'wp-notes-manager'); ?>
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=wpnm-all-notes')); ?>" class="button button-primary">
+                        <?php esc_html_e('View All Tasks', 'wp-notes-manager'); ?>
                     </a>
                 </div>
             <?php else: ?>
                 <div class="wpnm-widget-empty">
-                    <p><?php _e('🎉 Great job! No overdue or upcoming tasks.', 'wp-notes-manager'); ?></p>
-                    <a href="<?php echo admin_url('admin.php?page=wpnm-all-notes'); ?>" class="button">
-                        <?php _e('Create New Task', 'wp-notes-manager'); ?>
+                    <p><?php esc_html_e('🎉 Great job! No overdue or upcoming tasks.', 'wp-notes-manager'); ?></p>
+                    <a href="<?php echo esc_url(admin_url('admin.php?page=wpnm-all-notes')); ?>" class="button">
+                        <?php esc_html_e('Create New Task', 'wp-notes-manager'); ?>
                     </a>
                 </div>
             <?php endif; ?>
@@ -440,9 +440,10 @@ class NotesManager {
                     $preferences = get_user_meta($current_user_id, 'wpnm_notification_preferences', true);
                     if ($preferences && isset($preferences['deadlines']['enabled'])) {
                         $days_ahead = $preferences['deadlines']['days_ahead'] ?? 3;
-                        printf(__('Receiving daily notifications for tasks due within %d days.', 'wp-notes-manager'), $days_ahead);
+                        // translators: %d is the number of days
+                        printf(esc_html__('Receiving daily notifications for tasks due within %d days.', 'wp-notes-manager'), $days_ahead);
                     } else {
-                        _e('Configure email notifications in your profile settings.', 'wp-notes-manager');
+                        esc_html_e('Configure email notifications in your profile settings.', 'wp-notes-manager');
                     }
                     ?>
                 </small>
@@ -450,7 +451,7 @@ class NotesManager {
                 <?php if ($preferences && isset($preferences['deadlines']['enabled'])): ?>
                     <br>
                     <button type="button" id="wpnm-test-notification" class="button button-small" style="margin-top: 5px;">
-                        <?php _e('Test Notification', 'wp-notes-manager'); ?>
+                        <?php esc_html_e('Test Notification', 'wp-notes-manager'); ?>
                     </button>
                 <?php endif; ?>
             </div>
@@ -546,7 +547,7 @@ class NotesManager {
                 var button = $(this);
                 var originalText = button.text();
                 
-                button.text('<?php _e('Sending...', 'wp-notes-manager'); ?>').prop('disabled', true);
+                button.text('<?php esc_html_e('Sending...', 'wp-notes-manager'); ?>').prop('disabled', true);
                 
                 $.ajax({
                     url: ajaxurl,
@@ -557,13 +558,13 @@ class NotesManager {
                     },
                     success: function(response) {
                         if (response.success) {
-                            alert('<?php _e('Test notification sent successfully! Check your email.', 'wp-notes-manager'); ?>');
+                            alert('<?php esc_html_e('Test notification sent successfully! Check your email.', 'wp-notes-manager'); ?>');
                         } else {
-                            alert(response.data.message || '<?php _e('Error sending test notification.', 'wp-notes-manager'); ?>');
+                            alert(response.data.message || '<?php esc_html_e('Error sending test notification.', 'wp-notes-manager'); ?>');
                         }
                     },
                     error: function() {
-                        alert('<?php _e('Error sending test notification.', 'wp-notes-manager'); ?>');
+                        alert('<?php esc_html_e('Error sending test notification.', 'wp-notes-manager'); ?>');
                     },
                     complete: function() {
                         button.text(originalText).prop('disabled', false);
@@ -582,7 +583,7 @@ class NotesManager {
      * @return array Modified columns
      */
     public function addNotesColumn($columns) {
-        $columns['wpnm_notes'] = __('Notes', 'wp-notes-manager');
+        $columns['wpnm_notes'] = esc_html__('Notes', 'wp-notes-manager');
         return $columns;
     }
     
@@ -600,7 +601,7 @@ class NotesManager {
                 // translators: %d is the number of notes
                 echo '<span style="color: #0073aa;">' . sprintf(_n('%d note', '%d notes', $notes_count, 'wp-notes-manager'), $notes_count) . '</span>';
             } else {
-                echo '<span style="color: #999;">' . __('No notes', 'wp-notes-manager') . '</span>';
+                echo '<span style="color: #999;">' . esc_html__('No notes', 'wp-notes-manager') . '</span>';
             }
         }
     }

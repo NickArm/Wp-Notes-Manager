@@ -68,8 +68,8 @@ class AdminManager {
     public function addAdminMenu() {
         // Main menu page
         add_menu_page(
-            __('Notes Manager', 'wp-notes-manager'),
-            __('Notes', 'wp-notes-manager'),
+            esc_html__('Notes Manager', 'wp-notes-manager'),
+            esc_html__('Notes', 'wp-notes-manager'),
             'edit_posts',
             'wpnm-dashboard',
             [$this, 'renderDashboardPage'],
@@ -80,8 +80,8 @@ class AdminManager {
         // Dashboard submenu
         add_submenu_page(
             'wpnm-dashboard',
-            __('Notes Dashboard', 'wp-notes-manager'),
-            __('Dashboard', 'wp-notes-manager'),
+            esc_html__('Notes Dashboard', 'wp-notes-manager'),
+            esc_html__('Dashboard', 'wp-notes-manager'),
             'edit_posts',
             'wpnm-dashboard',
             [$this, 'renderDashboardPage']
@@ -90,8 +90,8 @@ class AdminManager {
         // All Notes submenu
         add_submenu_page(
             'wpnm-dashboard',
-            __('All Notes', 'wp-notes-manager'),
-            __('All Notes', 'wp-notes-manager'),
+            esc_html__('All Notes', 'wp-notes-manager'),
+            esc_html__('All Notes', 'wp-notes-manager'),
             'edit_posts',
             'wpnm-all-notes',
             [$this, 'renderAllNotesPage']
@@ -100,8 +100,8 @@ class AdminManager {
         // Stages submenu (only for administrators)
         add_submenu_page(
             'wpnm-dashboard',
-            __('Stages Management', 'wp-notes-manager'),
-            __('Stages', 'wp-notes-manager'),
+            esc_html__('Stages Management', 'wp-notes-manager'),
+            esc_html__('Stages', 'wp-notes-manager'),
             'manage_options',
             'wpnm-stages',
             [$this, 'renderStagesPage']
@@ -110,8 +110,8 @@ class AdminManager {
         // Audit Logs submenu (only for administrators)
         add_submenu_page(
             'wpnm-dashboard',
-            __('Audit Logs', 'wp-notes-manager'),
-            __('Audit Logs', 'wp-notes-manager'),
+            esc_html__('Audit Logs', 'wp-notes-manager'),
+            esc_html__('Audit Logs', 'wp-notes-manager'),
             'manage_options',
             'wpnm-audit-logs',
             [$this, 'renderAuditLogsPage']
@@ -120,8 +120,8 @@ class AdminManager {
         // Enhanced Test Suite submenu (only for administrators)
         add_submenu_page(
             'wpnm-dashboard',
-            __('Enhanced Test Suite', 'wp-notes-manager'),
-            __('Enhanced Tests', 'wp-notes-manager'),
+            esc_html__('Enhanced Test Suite', 'wp-notes-manager'),
+            esc_html__('Enhanced Tests', 'wp-notes-manager'),
             'manage_options',
             'wpnm-enhanced-test',
             [$this, 'renderEnhancedTestPage']
@@ -130,8 +130,8 @@ class AdminManager {
         // Manual Testing Checklist submenu (only for administrators)
         add_submenu_page(
             'wpnm-dashboard',
-            __('Manual Testing Checklist', 'wp-notes-manager'),
-            __('Manual Testing', 'wp-notes-manager'),
+            esc_html__('Manual Testing Checklist', 'wp-notes-manager'),
+            esc_html__('Manual Testing', 'wp-notes-manager'),
             'manage_options',
             'wpnm-manual-checklist',
             [$this, 'renderManualChecklistPage']
@@ -140,8 +140,8 @@ class AdminManager {
         // Settings submenu (only for administrators)
         add_submenu_page(
             'wpnm-dashboard',
-            __('Notes Settings', 'wp-notes-manager'),
-            __('Settings', 'wp-notes-manager'),
+            esc_html__('Notes Settings', 'wp-notes-manager'),
+            esc_html__('Settings', 'wp-notes-manager'),
             'manage_options',
             'wpnm-settings',
             [$this, 'renderSettingsPage']
@@ -178,16 +178,16 @@ class AdminManager {
         
         // Localize script
         wp_localize_script('wpnm-admin-script', 'wpnm_admin', [
-            'ajax_url' => admin_url('admin-ajax.php'),
+            'ajax_url' => esc_url(admin_url('admin-ajax.php')),
             'nonce' => wp_create_nonce('wpnm_add_note'),
             'strings' => [
-                'confirm_delete' => __('Are you sure you want to delete this note?', 'wp-notes-manager'),
-                'confirm_archive' => __('Are you sure you want to archive this note?', 'wp-notes-manager'),
-                'error_occurred' => __('An error occurred. Please try again.', 'wp-notes-manager'),
-                'note_added' => __('Note added successfully!', 'wp-notes-manager'),
-                'note_updated' => __('Note updated successfully!', 'wp-notes-manager'),
-                'note_deleted' => __('Note deleted successfully!', 'wp-notes-manager'),
-                'note_archived' => __('Note archived successfully!', 'wp-notes-manager')
+                'confirm_delete' => esc_html__('Are you sure you want to delete this note?', 'wp-notes-manager'),
+                'confirm_archive' => esc_html__('Are you sure you want to archive this note?', 'wp-notes-manager'),
+                'error_occurred' => esc_html__('An error occurred. Please try again.', 'wp-notes-manager'),
+                'note_added' => esc_html__('Note added successfully!', 'wp-notes-manager'),
+                'note_updated' => esc_html__('Note updated successfully!', 'wp-notes-manager'),
+                'note_deleted' => esc_html__('Note deleted successfully!', 'wp-notes-manager'),
+                'note_archived' => esc_html__('Note archived successfully!', 'wp-notes-manager')
             ]
         ]);
     }
@@ -204,14 +204,14 @@ class AdminManager {
         // Add settings sections
         add_settings_section(
             'wpnm_general_section',
-            __('General Settings', 'wp-notes-manager'),
+            esc_html__('General Settings', 'wp-notes-manager'),
             [$this, 'renderGeneralSection'],
             'wpnm_settings'
         );
         
         add_settings_section(
             'wpnm_display_section',
-            __('Display Settings', 'wp-notes-manager'),
+            esc_html__('Display Settings', 'wp-notes-manager'),
             [$this, 'renderDisplaySection'],
             'wpnm_settings'
         );
@@ -219,7 +219,7 @@ class AdminManager {
         // Add settings fields
         add_settings_field(
             'wpnm_auto_cleanup',
-            __('Auto Cleanup Deleted Notes', 'wp-notes-manager'),
+            esc_html__('Auto Cleanup Deleted Notes', 'wp-notes-manager'),
             [$this, 'renderAutoCleanupField'],
             'wpnm_settings',
             'wpnm_general_section'
@@ -227,7 +227,7 @@ class AdminManager {
         
         add_settings_field(
             'wpnm_cleanup_days',
-            __('Cleanup Days', 'wp-notes-manager'),
+            esc_html__('Cleanup Days', 'wp-notes-manager'),
             [$this, 'renderCleanupDaysField'],
             'wpnm_settings',
             'wpnm_general_section'
@@ -235,7 +235,7 @@ class AdminManager {
         
         add_settings_field(
             'wpnm_show_in_admin_bar',
-            __('Show in Admin Bar', 'wp-notes-manager'),
+            esc_html__('Show in Admin Bar', 'wp-notes-manager'),
             [$this, 'renderShowInAdminBarField'],
             'wpnm_settings',
             'wpnm_display_section'
@@ -243,7 +243,7 @@ class AdminManager {
         
         add_settings_field(
             'wpnm_show_dashboard_widget',
-            __('Show Dashboard Widget', 'wp-notes-manager'),
+            esc_html__('Show Dashboard Widget', 'wp-notes-manager'),
             [$this, 'renderShowDashboardWidgetField'],
             'wpnm_settings',
             'wpnm_display_section'
@@ -262,44 +262,44 @@ class AdminManager {
         
         ?>
         <div class="wrap">
-            <h1><?php _e('Notes Dashboard', 'wp-notes-manager'); ?></h1>
+            <h1><?php esc_html_e('Notes Dashboard', 'wp-notes-manager'); ?></h1>
             
             <!-- Statistics Cards -->
             <div class="wpnm-stats-grid">
                 <div class="wpnm-stat-card">
                     <h3><?php echo esc_html($stats['total']); ?></h3>
-                    <p><?php _e('Total Notes', 'wp-notes-manager'); ?></p>
+                    <p><?php esc_html_e('Total Notes', 'wp-notes-manager'); ?></p>
                 </div>
                 <div class="wpnm-stat-card">
                     <h3><?php echo esc_html($stats['dashboard']); ?></h3>
-                    <p><?php _e('Dashboard Notes', 'wp-notes-manager'); ?></p>
+                    <p><?php esc_html_e('Dashboard Notes', 'wp-notes-manager'); ?></p>
                 </div>
                 <div class="wpnm-stat-card">
                     <h3><?php echo esc_html($stats['posts']); ?></h3>
-                    <p><?php _e('Post Notes', 'wp-notes-manager'); ?></p>
+                    <p><?php esc_html_e('Post Notes', 'wp-notes-manager'); ?></p>
                 </div>
                 <div class="wpnm-stat-card">
                     <h3><?php echo esc_html($stats['pages']); ?></h3>
-                    <p><?php _e('Page Notes', 'wp-notes-manager'); ?></p>
+                    <p><?php esc_html_e('Page Notes', 'wp-notes-manager'); ?></p>
                 </div>
                 <div class="wpnm-stat-card">
                     <h3><?php echo esc_html($stats['archived']); ?></h3>
-                    <p><?php _e('Archived Notes', 'wp-notes-manager'); ?></p>
+                    <p><?php esc_html_e('Archived Notes', 'wp-notes-manager'); ?></p>
                 </div>
                 <div class="wpnm-stat-card">
                     <h3><?php echo esc_html($stats['recent']); ?></h3>
-                    <p><?php _e('Recent Notes (7 days)', 'wp-notes-manager'); ?></p>
+                    <p><?php esc_html_e('Recent Notes (7 days)', 'wp-notes-manager'); ?></p>
                 </div>
             </div>
             
             <!-- Quick Add Note -->
             <div class="wpnm-quick-add">
-                <h2><?php _e('Quick Add Note', 'wp-notes-manager'); ?></h2>
+                <h2><?php esc_html_e('Quick Add Note', 'wp-notes-manager'); ?></h2>
                 <form id="wpnm-quick-add-form">
                     <table class="form-table">
                         <tr>
                             <th scope="row">
-                                <label for="wpnm-quick-title"><?php _e('Title', 'wp-notes-manager'); ?></label>
+                                <label for="wpnm-quick-title"><?php esc_html_e('Title', 'wp-notes-manager'); ?></label>
                             </th>
                             <td>
                                 <input type="text" id="wpnm-quick-title" name="title" class="regular-text" required />
@@ -307,7 +307,7 @@ class AdminManager {
                         </tr>
                         <tr>
                             <th scope="row">
-                                <label for="wpnm-quick-content"><?php _e('Content', 'wp-notes-manager'); ?></label>
+                                <label for="wpnm-quick-content"><?php esc_html_e('Content', 'wp-notes-manager'); ?></label>
                             </th>
                             <td>
                                 <textarea id="wpnm-quick-content" name="content" rows="4" class="large-text" required></textarea>
@@ -315,25 +315,25 @@ class AdminManager {
                         </tr>
                         <tr>
                             <th scope="row">
-                                <label for="wpnm-quick-priority"><?php _e('Priority', 'wp-notes-manager'); ?></label>
+                                <label for="wpnm-quick-priority"><?php esc_html_e('Priority', 'wp-notes-manager'); ?></label>
                             </th>
                             <td>
                                 <select id="wpnm-quick-priority" name="priority">
-                                    <option value="low"><?php _e('Low', 'wp-notes-manager'); ?></option>
-                                    <option value="medium" selected><?php _e('Medium', 'wp-notes-manager'); ?></option>
-                                    <option value="high"><?php _e('High', 'wp-notes-manager'); ?></option>
-                                    <option value="urgent"><?php _e('Urgent', 'wp-notes-manager'); ?></option>
+                                    <option value="low"><?php esc_html_e('Low', 'wp-notes-manager'); ?></option>
+                                    <option value="medium" selected><?php esc_html_e('Medium', 'wp-notes-manager'); ?></option>
+                                    <option value="high"><?php esc_html_e('High', 'wp-notes-manager'); ?></option>
+                                    <option value="urgent"><?php esc_html_e('Urgent', 'wp-notes-manager'); ?></option>
                                 </select>
                             </td>
                         </tr>
                         <!-- Color field removed -->
                         <tr>
                             <th scope="row">
-                                <label for="wpnm-quick-assigned"><?php _e('Assign To', 'wp-notes-manager'); ?></label>
+                                <label for="wpnm-quick-assigned"><?php esc_html_e('Assign To', 'wp-notes-manager'); ?></label>
                             </th>
                             <td>
                                 <select id="wpnm-quick-assigned" name="assigned_to">
-                                    <option value=""><?php _e('No Assignment', 'wp-notes-manager'); ?></option>
+                                    <option value=""><?php esc_html_e('No Assignment', 'wp-notes-manager'); ?></option>
                                     <?php
                                     $users = get_users(['orderby' => 'display_name']);
                                     foreach ($users as $user) {
@@ -346,7 +346,7 @@ class AdminManager {
                     </table>
                     <p class="submit">
                         <button type="submit" class="button button-primary">
-                            <?php _e('Add Note', 'wp-notes-manager'); ?>
+                            <?php esc_html_e('Add Note', 'wp-notes-manager'); ?>
                         </button>
                     </p>
                 </form>
@@ -354,9 +354,9 @@ class AdminManager {
             
             <!-- Recent Notes -->
             <div class="wpnm-recent-notes">
-                <h2><?php _e('Recent Dashboard Notes', 'wp-notes-manager'); ?></h2>
+                <h2><?php esc_html_e('Recent Dashboard Notes', 'wp-notes-manager'); ?></h2>
                 <?php if (empty($recent_notes)): ?>
-                    <p><?php _e('No notes yet.', 'wp-notes-manager'); ?></p>
+                    <p><?php esc_html_e('No notes yet.', 'wp-notes-manager'); ?></p>
                 <?php else: ?>
                     <div class="wpnm-notes-list">
                         <?php foreach ($recent_notes as $note): ?>
@@ -491,10 +491,10 @@ class AdminManager {
         ?>
         <div class="wrap">
             <div class="wpnm-page-header">
-                <h1><?php _e('All Notes', 'wp-notes-manager'); ?></h1>
+                <h1><?php esc_html_e('All Notes', 'wp-notes-manager'); ?></h1>
                 <button type="button" class="button button-primary wpnm-add-note-btn" id="wpnm-quick-add-btn">
                     <span class="dashicons dashicons-plus"></span>
-                    <?php _e('Add New Note', 'wp-notes-manager'); ?>
+                    <?php esc_html_e('Add New Note', 'wp-notes-manager'); ?>
                 </button>
             </div>
             
@@ -504,27 +504,27 @@ class AdminManager {
                 <div class="wpnm-controls-left">
                     <!-- Filter Tabs -->
                     <div class="wpnm-filter-tabs">
-                        <a href="<?php echo admin_url('admin.php?page=wpnm-all-notes'); ?>" class="wpnm-filter-tab <?php echo $filter === 'all' ? 'active' : ''; ?>">
-                            <?php _e('All Notes', 'wp-notes-manager'); ?>
+                        <a href="<?php echo esc_url(esc_url(admin_url('admin.php?page=wpnm-all-notes'))); ?>" class="wpnm-filter-tab <?php echo esc_attr($filter === 'all' ? 'active' : ''); ?>">
+                            <?php esc_html_e('All Notes', 'wp-notes-manager'); ?>
                         </a>
-                        <a href="<?php echo admin_url('admin.php?page=wpnm-all-notes&filter=my'); ?>" class="wpnm-filter-tab <?php echo $filter === 'my' ? 'active' : ''; ?>">
-                            <?php _e('My Notes', 'wp-notes-manager'); ?>
+                        <a href="<?php echo esc_url(esc_url(admin_url('admin.php?page=wpnm-all-notes&filter=my'))); ?>" class="wpnm-filter-tab <?php echo esc_attr($filter === 'my' ? 'active' : ''); ?>">
+                            <?php esc_html_e('My Notes', 'wp-notes-manager'); ?>
                         </a>
-                        <a href="<?php echo admin_url('admin.php?page=wpnm-all-notes&filter=assigned'); ?>" class="wpnm-filter-tab <?php echo $filter === 'assigned' ? 'active' : ''; ?>">
-                            <?php _e('Assigned to Me', 'wp-notes-manager'); ?>
+                        <a href="<?php echo esc_url(esc_url(admin_url('admin.php?page=wpnm-all-notes&filter=assigned'))); ?>" class="wpnm-filter-tab <?php echo esc_attr($filter === 'assigned' ? 'active' : ''); ?>">
+                            <?php esc_html_e('Assigned to Me', 'wp-notes-manager'); ?>
                         </a>
                     </div>
                     
                     <!-- Stage Filter -->
                     <div class="wpnm-stage-filter">
                         <select id="wpnm-stage-filter-select" name="stage_filter">
-                            <option value=""><?php _e('All Stages', 'wp-notes-manager'); ?></option>
+                            <option value=""><?php esc_html_e('All Stages', 'wp-notes-manager'); ?></option>
                             <?php
                             $stages_manager = wpnm()->getComponent('stages');
                             $stages = $stages_manager->getStages();
                             foreach ($stages as $stage) {
                                 $selected = ($stage_filter == $stage->id) ? 'selected' : '';
-                                printf('<option value="%d" %s>%s</option>', $stage->id, $selected, esc_html($stage->name));
+                                printf('<option value="%d" %s>%s</option>', $stage->id, esc_attr($selected), esc_html($stage->name));
                             }
                             ?>
                         </select>
@@ -534,15 +534,15 @@ class AdminManager {
                 <!-- Right Side: Layout Controls -->
                 <div class="wpnm-controls-right">
                     <div class="wpnm-layout-controls">
-                        <span class="wpnm-layout-label"><?php _e('Layout:', 'wp-notes-manager'); ?></span>
+                        <span class="wpnm-layout-label"><?php esc_html_e('Layout:', 'wp-notes-manager'); ?></span>
                         <div class="wpnm-layout-buttons">
-                            <button type="button" class="wpnm-layout-btn active" data-layout="list" title="<?php _e('List View', 'wp-notes-manager'); ?>">
+                            <button type="button" class="wpnm-layout-btn active" data-layout="list" title="<?php esc_html_e('List View', 'wp-notes-manager'); ?>">
                                 <span class="dashicons dashicons-list-view"></span>
                             </button>
-                            <button type="button" class="wpnm-layout-btn" data-layout="2-columns" title="<?php _e('2 Columns', 'wp-notes-manager'); ?>">
+                            <button type="button" class="wpnm-layout-btn" data-layout="2-columns" title="<?php esc_html_e('2 Columns', 'wp-notes-manager'); ?>">
                                 <span class="dashicons dashicons-grid-view"></span>
                             </button>
-                            <button type="button" class="wpnm-layout-btn" data-layout="3-columns" title="<?php _e('3 Columns', 'wp-notes-manager'); ?>">
+                            <button type="button" class="wpnm-layout-btn" data-layout="3-columns" title="<?php esc_html_e('3 Columns', 'wp-notes-manager'); ?>">
                                 <span class="dashicons dashicons-grid-view"></span>
                             </button>
                         </div>
@@ -553,12 +553,12 @@ class AdminManager {
             <!-- Quick Add Form (Hidden by default) -->
             <div class="wpnm-quick-add-form-container" id="wpnm-quick-add-form-container" style="display: none;">
                 <div class="wpnm-quick-add">
-                    <h3><?php _e('Add New Note', 'wp-notes-manager'); ?></h3>
+                    <h3><?php esc_html_e('Add New Note', 'wp-notes-manager'); ?></h3>
                     <form id="wpnm-quick-add-form">
                         <table class="form-table">
                             <tr>
                                 <th scope="row">
-                                    <label for="wpnm-quick-title"><?php _e('Title', 'wp-notes-manager'); ?></label>
+                                    <label for="wpnm-quick-title"><?php esc_html_e('Title', 'wp-notes-manager'); ?></label>
                                 </th>
                                 <td>
                                     <input type="text" id="wpnm-quick-title" name="title" class="regular-text" required />
@@ -566,7 +566,7 @@ class AdminManager {
                             </tr>
                             <tr>
                                 <th scope="row">
-                                    <label for="wpnm-quick-content"><?php _e('Content', 'wp-notes-manager'); ?></label>
+                                    <label for="wpnm-quick-content"><?php esc_html_e('Content', 'wp-notes-manager'); ?></label>
                                 </th>
                                 <td>
                                     <textarea id="wpnm-quick-content" name="content" rows="4" class="large-text" required></textarea>
@@ -574,25 +574,25 @@ class AdminManager {
                             </tr>
                             <tr>
                                 <th scope="row">
-                                    <label for="wpnm-quick-priority"><?php _e('Priority', 'wp-notes-manager'); ?></label>
+                                    <label for="wpnm-quick-priority"><?php esc_html_e('Priority', 'wp-notes-manager'); ?></label>
                                 </th>
                                 <td>
                                     <select id="wpnm-quick-priority" name="priority">
-                                        <option value="low"><?php _e('Low', 'wp-notes-manager'); ?></option>
-                                        <option value="medium" selected><?php _e('Medium', 'wp-notes-manager'); ?></option>
-                                        <option value="high"><?php _e('High', 'wp-notes-manager'); ?></option>
-                                        <option value="urgent"><?php _e('Urgent', 'wp-notes-manager'); ?></option>
+                                        <option value="low"><?php esc_html_e('Low', 'wp-notes-manager'); ?></option>
+                                        <option value="medium" selected><?php esc_html_e('Medium', 'wp-notes-manager'); ?></option>
+                                        <option value="high"><?php esc_html_e('High', 'wp-notes-manager'); ?></option>
+                                        <option value="urgent"><?php esc_html_e('Urgent', 'wp-notes-manager'); ?></option>
                                     </select>
                                 </td>
                             </tr>
                             <!-- Color field removed -->
                             <tr>
                                 <th scope="row">
-                                    <label for="wpnm-quick-assigned"><?php _e('Assign To', 'wp-notes-manager'); ?></label>
+                                    <label for="wpnm-quick-assigned"><?php esc_html_e('Assign To', 'wp-notes-manager'); ?></label>
                                 </th>
                                 <td>
                                     <select id="wpnm-quick-assigned" name="assigned_to">
-                                        <option value=""><?php _e('No Assignment', 'wp-notes-manager'); ?></option>
+                                        <option value=""><?php esc_html_e('No Assignment', 'wp-notes-manager'); ?></option>
                                         <?php
                                         $users = get_users(['orderby' => 'display_name']);
                                         foreach ($users as $user) {
@@ -604,11 +604,11 @@ class AdminManager {
                             </tr>
             <tr>
                 <th scope="row">
-                    <label for="wpnm-quick-stage"><?php _e('Stage', 'wp-notes-manager'); ?></label>
+                    <label for="wpnm-quick-stage"><?php esc_html_e('Stage', 'wp-notes-manager'); ?></label>
                 </th>
                 <td>
                     <select id="wpnm-quick-stage" name="stage_id">
-                        <option value=""><?php _e('No Stage', 'wp-notes-manager'); ?></option>
+                        <option value=""><?php esc_html_e('No Stage', 'wp-notes-manager'); ?></option>
                         <?php
                         $stages_manager = wpnm()->getComponent('stages');
                         $stages = $stages_manager->getStages();
@@ -621,20 +621,20 @@ class AdminManager {
             </tr>
             <tr>
                 <th scope="row">
-                    <label for="wpnm-quick-deadline"><?php _e('Deadline', 'wp-notes-manager'); ?></label>
+                    <label for="wpnm-quick-deadline"><?php esc_html_e('Deadline', 'wp-notes-manager'); ?></label>
                 </th>
                 <td>
                     <input type="datetime-local" id="wpnm-quick-deadline" name="deadline" />
-                    <p class="description"><?php _e('Optional deadline for this note', 'wp-notes-manager'); ?></p>
+                    <p class="description"><?php esc_html_e('Optional deadline for this note', 'wp-notes-manager'); ?></p>
                 </td>
             </tr>
                         </table>
                         <p class="submit">
                             <button type="submit" class="button button-primary">
-                                <?php _e('Add Note', 'wp-notes-manager'); ?>
+                                <?php esc_html_e('Add Note', 'wp-notes-manager'); ?>
                             </button>
                             <button type="button" class="button wpnm-cancel-add-btn">
-                                <?php _e('Cancel', 'wp-notes-manager'); ?>
+                                <?php esc_html_e('Cancel', 'wp-notes-manager'); ?>
                             </button>
                         </p>
                     </form>
@@ -647,27 +647,27 @@ class AdminManager {
                     <h3 class="wpnm-empty-state-title">
                         <?php 
                         if ($filter === 'my') {
-                            _e('No Notes Created Yet', 'wp-notes-manager');
+                            esc_html_e('No Notes Created Yet', 'wp-notes-manager');
                         } elseif ($filter === 'assigned') {
-                            _e('No Notes Assigned to You', 'wp-notes-manager');
+                            esc_html_e('No Notes Assigned to You', 'wp-notes-manager');
                         } else {
-                            _e('No Notes Yet', 'wp-notes-manager');
+                            esc_html_e('No Notes Yet', 'wp-notes-manager');
                         }
                         ?>
                     </h3>
                     <p class="wpnm-empty-state-description">
                         <?php 
                         if ($filter === 'my') {
-                            _e('You haven\'t created any notes yet. Click "Add New Note" to get started.', 'wp-notes-manager');
+                            esc_html_e('You haven\'t created any notes yet. Click "Add New Note" to get started.', 'wp-notes-manager');
                         } elseif ($filter === 'assigned') {
-                            _e('No notes have been assigned to you yet.', 'wp-notes-manager');
+                            esc_html_e('No notes have been assigned to you yet.', 'wp-notes-manager');
                         } else {
-                            _e('Start adding notes to see them here. You can add notes from the dashboard or while editing posts and pages.', 'wp-notes-manager');
+                            esc_html_e('Start adding notes to see them here. You can add notes from the dashboard or while editing posts and pages.', 'wp-notes-manager');
                         }
                         ?>
                     </p>
                     <button type="button" class="button button-primary wpnm-add-note-btn">
-                        <?php _e('Add Your First Note', 'wp-notes-manager'); ?>
+                        <?php esc_html_e('Add Your First Note', 'wp-notes-manager'); ?>
                     </button>
                 </div>
             <?php else: ?>
@@ -684,12 +684,12 @@ class AdminManager {
                         $pagination_args = [
                             'base' => add_query_arg(['paged' => '%#%', 'filter' => $filter, 'stage' => $stage_filter]),
                             'format' => '',
-                            'prev_text' => __('&laquo; Previous', 'wp-notes-manager'),
-                            'next_text' => __('Next &raquo;', 'wp-notes-manager'),
+                            'prev_text' => esc_html__('&laquo; Previous', 'wp-notes-manager'),
+                            'next_text' => esc_html__('Next &raquo;', 'wp-notes-manager'),
                             'total' => $total_pages,
                             'current' => $current_page
                         ];
-                        echo paginate_links($pagination_args);
+                        echo wp_kses_post(paginate_links($pagination_args));
                         ?>
                     </div>
                 <?php endif; ?>
@@ -704,33 +704,33 @@ class AdminManager {
     public function renderStagesPage() {
         // Check permissions
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have permission to access this page.', 'wp-notes-manager'));
+            wp_die(esc_html__('You do not have permission to access this page.', 'wp-notes-manager'));
         }
         
         $stages_manager = wpnm()->getComponent('stages');
         $stages = $stages_manager->getStages();
         ?>
         <div class="wrap">
-            <h1><?php _e('Stages Management', 'wp-notes-manager'); ?></h1>
+            <h1><?php esc_html_e('Stages Management', 'wp-notes-manager'); ?></h1>
             
             <div class="wpnm-stages-container">
                 <div class="wpnm-stages-header">
                     <button type="button" class="button button-primary" id="wpnm-add-stage-btn">
                         <span class="dashicons dashicons-plus"></span>
-                        <?php _e('Add New Stage', 'wp-notes-manager'); ?>
+                        <?php esc_html_e('Add New Stage', 'wp-notes-manager'); ?>
                     </button>
                 </div>
                 
                 <!-- Add/Edit Stage Form -->
                 <div class="wpnm-stage-form-container" id="wpnm-stage-form-container" style="display: none;">
                     <div class="wpnm-stage-form">
-                        <h3 id="wpnm-stage-form-title"><?php _e('Add New Stage', 'wp-notes-manager'); ?></h3>
+                        <h3 id="wpnm-stage-form-title"><?php esc_html_e('Add New Stage', 'wp-notes-manager'); ?></h3>
                         <form id="wpnm-stage-form">
                             <input type="hidden" id="wpnm-stage-id" name="stage_id" value="">
                             <table class="form-table">
                                 <tr>
                                     <th scope="row">
-                                        <label for="wpnm-stage-name"><?php _e('Stage Name', 'wp-notes-manager'); ?></label>
+                                        <label for="wpnm-stage-name"><?php esc_html_e('Stage Name', 'wp-notes-manager'); ?></label>
                                     </th>
                                     <td>
                                         <input type="text" id="wpnm-stage-name" name="name" class="regular-text" required />
@@ -738,7 +738,7 @@ class AdminManager {
                                 </tr>
                                 <tr>
                                     <th scope="row">
-                                        <label for="wpnm-stage-description"><?php _e('Description', 'wp-notes-manager'); ?></label>
+                                        <label for="wpnm-stage-description"><?php esc_html_e('Description', 'wp-notes-manager'); ?></label>
                                     </th>
                                     <td>
                                         <textarea id="wpnm-stage-description" name="description" rows="3" class="large-text"></textarea>
@@ -746,7 +746,7 @@ class AdminManager {
                                 </tr>
                                 <tr>
                                     <th scope="row">
-                                        <label for="wpnm-stage-color"><?php _e('Color', 'wp-notes-manager'); ?></label>
+                                        <label for="wpnm-stage-color"><?php esc_html_e('Color', 'wp-notes-manager'); ?></label>
                                     </th>
                                     <td>
                                         <input type="color" id="wpnm-stage-color" name="color" value="#6b7280" />
@@ -754,7 +754,7 @@ class AdminManager {
                                 </tr>
                                 <tr>
                                     <th scope="row">
-                                        <label for="wpnm-stage-sort-order"><?php _e('Sort Order', 'wp-notes-manager'); ?></label>
+                                        <label for="wpnm-stage-sort-order"><?php esc_html_e('Sort Order', 'wp-notes-manager'); ?></label>
                                     </th>
                                     <td>
                                         <input type="number" id="wpnm-stage-sort-order" name="sort_order" value="0" min="0" />
@@ -762,20 +762,20 @@ class AdminManager {
                                 </tr>
                                 <tr>
                                     <th scope="row">
-                                        <label for="wpnm-stage-is-default"><?php _e('Default Stage', 'wp-notes-manager'); ?></label>
+                                        <label for="wpnm-stage-is-default"><?php esc_html_e('Default Stage', 'wp-notes-manager'); ?></label>
                                     </th>
                                     <td>
                                         <input type="checkbox" id="wpnm-stage-is-default" name="is_default" value="1" />
-                                        <label for="wpnm-stage-is-default"><?php _e('Set as default stage for new notes', 'wp-notes-manager'); ?></label>
+                                        <label for="wpnm-stage-is-default"><?php esc_html_e('Set as default stage for new notes', 'wp-notes-manager'); ?></label>
                                     </td>
                                 </tr>
                             </table>
                             <p class="submit">
                                 <button type="submit" class="button button-primary">
-                                    <?php _e('Save Stage', 'wp-notes-manager'); ?>
+                                    <?php esc_html_e('Save Stage', 'wp-notes-manager'); ?>
                                 </button>
                                 <button type="button" class="button wpnm-cancel-stage-btn">
-                                    <?php _e('Cancel', 'wp-notes-manager'); ?>
+                                    <?php esc_html_e('Cancel', 'wp-notes-manager'); ?>
                                 </button>
                             </p>
                         </form>
@@ -787,19 +787,19 @@ class AdminManager {
                     <?php if (empty($stages)): ?>
                         <div class="wpnm-empty-state">
                             <div class="wpnm-empty-state-icon">📋</div>
-                            <h3 class="wpnm-empty-state-title"><?php _e('No Stages Yet', 'wp-notes-manager'); ?></h3>
-                            <p class="wpnm-empty-state-description"><?php _e('Create your first stage to organize your notes.', 'wp-notes-manager'); ?></p>
+                            <h3 class="wpnm-empty-state-title"><?php esc_html_e('No Stages Yet', 'wp-notes-manager'); ?></h3>
+                            <p class="wpnm-empty-state-description"><?php esc_html_e('Create your first stage to organize your notes.', 'wp-notes-manager'); ?></p>
                         </div>
                     <?php else: ?>
                         <table class="wp-list-table widefat fixed striped">
                             <thead>
                                 <tr>
-                                    <th><?php _e('Name', 'wp-notes-manager'); ?></th>
-                                    <th><?php _e('Description', 'wp-notes-manager'); ?></th>
-                                    <th><?php _e('Color', 'wp-notes-manager'); ?></th>
-                                    <th><?php _e('Sort Order', 'wp-notes-manager'); ?></th>
-                                    <th><?php _e('Default', 'wp-notes-manager'); ?></th>
-                                    <th><?php _e('Actions', 'wp-notes-manager'); ?></th>
+                                    <th><?php esc_html_e('Name', 'wp-notes-manager'); ?></th>
+                                    <th><?php esc_html_e('Description', 'wp-notes-manager'); ?></th>
+                                    <th><?php esc_html_e('Color', 'wp-notes-manager'); ?></th>
+                                    <th><?php esc_html_e('Sort Order', 'wp-notes-manager'); ?></th>
+                                    <th><?php esc_html_e('Default', 'wp-notes-manager'); ?></th>
+                                    <th><?php esc_html_e('Actions', 'wp-notes-manager'); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -821,11 +821,11 @@ class AdminManager {
                                         </td>
                                         <td>
                                             <button type="button" class="button button-small wpnm-edit-stage-btn" data-stage-id="<?php echo esc_attr($stage->id); ?>">
-                                                <?php _e('Edit', 'wp-notes-manager'); ?>
+                                                <?php esc_html_e('Edit', 'wp-notes-manager'); ?>
                                             </button>
                                             <?php if (!$stage->is_default): ?>
                                                 <button type="button" class="button button-small button-link-delete wpnm-delete-stage-btn" data-stage-id="<?php echo esc_attr($stage->id); ?>">
-                                                    <?php _e('Delete', 'wp-notes-manager'); ?>
+                                                    <?php esc_html_e('Delete', 'wp-notes-manager'); ?>
                                                 </button>
                                             <?php endif; ?>
                                         </td>
@@ -846,7 +846,7 @@ class AdminManager {
     public function renderAuditLogsPage() {
         // Check permissions
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have permission to access this page.', 'wp-notes-manager'));
+            wp_die(esc_html__('You do not have permission to access this page.', 'wp-notes-manager'));
         }
         
         $audit_manager = wpnm()->getComponent('audit');
@@ -854,19 +854,19 @@ class AdminManager {
         $total_logs = $audit_manager->getAuditLogsCount();
         ?>
         <div class="wrap">
-            <h1><?php _e('Audit Logs', 'wp-notes-manager'); ?></h1>
+            <h1><?php esc_html_e('Audit Logs', 'wp-notes-manager'); ?></h1>
             
             <div class="wpnm-audit-logs-container">
                 <div class="wpnm-audit-logs-header">
                     <div class="wpnm-audit-logs-info">
                         <?php
                         // translators: %d is the number of log entries
-                        printf(__('Total log entries: %d', 'wp-notes-manager'), $total_logs);
+                        printf(esc_html__('Total log entries: %d', 'wp-notes-manager'), $total_logs);
                         ?>
                     </div>
                     <div class="wpnm-audit-logs-actions">
                         <button type="button" class="button" id="wpnm-clear-audit-logs-btn">
-                            <?php _e('Clear Old Logs', 'wp-notes-manager'); ?>
+                            <?php esc_html_e('Clear Old Logs', 'wp-notes-manager'); ?>
                         </button>
                     </div>
                 </div>
@@ -874,38 +874,38 @@ class AdminManager {
                 <?php if (empty($logs)): ?>
                     <div class="wpnm-empty-state">
                         <div class="wpnm-empty-state-icon">📊</div>
-                        <h3 class="wpnm-empty-state-title"><?php _e('No Audit Logs Yet', 'wp-notes-manager'); ?></h3>
-                        <p class="wpnm-empty-state-description"><?php _e('Audit logs will appear here as users interact with notes.', 'wp-notes-manager'); ?></p>
+                        <h3 class="wpnm-empty-state-title"><?php esc_html_e('No Audit Logs Yet', 'wp-notes-manager'); ?></h3>
+                        <p class="wpnm-empty-state-description"><?php esc_html_e('Audit logs will appear here as users interact with notes.', 'wp-notes-manager'); ?></p>
                     </div>
                 <?php else: ?>
                     <table class="wp-list-table widefat fixed striped">
                         <thead>
                             <tr>
-                                <th><?php _e('Date/Time', 'wp-notes-manager'); ?></th>
-                                <th><?php _e('User', 'wp-notes-manager'); ?></th>
-                                <th><?php _e('Action', 'wp-notes-manager'); ?></th>
-                                <th><?php _e('Note', 'wp-notes-manager'); ?></th>
-                                <th><?php _e('Details', 'wp-notes-manager'); ?></th>
-                                <th><?php _e('IP Address', 'wp-notes-manager'); ?></th>
+                                <th><?php esc_html_e('Date/Time', 'wp-notes-manager'); ?></th>
+                                <th><?php esc_html_e('User', 'wp-notes-manager'); ?></th>
+                                <th><?php esc_html_e('Action', 'wp-notes-manager'); ?></th>
+                                <th><?php esc_html_e('Note', 'wp-notes-manager'); ?></th>
+                                <th><?php esc_html_e('Details', 'wp-notes-manager'); ?></th>
+                                <th><?php esc_html_e('IP Address', 'wp-notes-manager'); ?></th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($logs as $log): ?>
                                 <tr>
-                                    <td><?php echo esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($log->created_at))); ?></td>
-                                    <td><?php echo esc_html($log->user_name ?: __('Unknown User', 'wp-notes-manager')); ?></td>
+                                    <td><?php echo esc_html(esc_html(date_i18n(get_option('date_format')) . ' ' . get_option('time_format'), strtotime($log->created_at))); ?></td>
+                                    <td><?php echo esc_html($log->user_name ?: esc_html__('Unknown User', 'wp-notes-manager')); ?></td>
                                     <td><?php echo esc_html($audit_manager->formatAction($log->action, $log->details)); ?></td>
                                     <td>
                                         <?php if ($log->note_title): ?>
-                                            <a href="<?php echo admin_url('admin.php?page=wpnm-all-notes'); ?>"><?php echo esc_html($log->note_title); ?></a>
+                                            <a href="<?php echo esc_url(admin_url('admin.php?page=wpnm-all-notes')); ?>"><?php echo esc_html($log->note_title); ?></a>
                                         <?php else: ?>
-                                            <?php _e('Note Deleted', 'wp-notes-manager'); ?>
+                                            <?php esc_html_e('Note Deleted', 'wp-notes-manager'); ?>
                                         <?php endif; ?>
                                     </td>
                                     <td>
                                         <?php if (!empty($log->details)): ?>
                                             <details>
-                                                <summary><?php _e('View Details', 'wp-notes-manager'); ?></summary>
+                                                <summary><?php esc_html_e('View Details', 'wp-notes-manager'); ?></summary>
                                                 <pre><?php echo esc_html(print_r($log->details, true)); ?></pre>
                                             </details>
                                         <?php endif; ?>
@@ -927,7 +927,7 @@ class AdminManager {
     public function renderSettingsPage() {
         ?>
         <div class="wrap">
-            <h1><?php _e('Notes Settings', 'wp-notes-manager'); ?></h1>
+            <h1><?php esc_html_e('Notes Settings', 'wp-notes-manager'); ?></h1>
             
             <form method="post" action="options.php">
                 <?php
@@ -947,8 +947,8 @@ class AdminManager {
      */
     private function renderAllNotesCard($note) {
         $author = get_user_by('id', $note->author_id);
-        $author_name = $author ? $author->display_name : __('Unknown', 'wp-notes-manager');
-        $created_date = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($note->created_at));
+        $author_name = $author ? $author->display_name : esc_html__('Unknown', 'wp-notes-manager');
+        $created_date = esc_html(date_i18n(get_option('date_format')) . ' ' . get_option('time_format'), strtotime($note->created_at));
         
         // Determine the source type and icon
         $source_type = '';
@@ -956,15 +956,15 @@ class AdminManager {
         $source_link = '';
         
         if ($note->note_type === 'dashboard') {
-            $source_type = __('Dashboard', 'wp-notes-manager');
+            $source_type = esc_html__('Dashboard', 'wp-notes-manager');
             $source_icon = 'dashicons-dashboard';
-            $source_link = admin_url('admin.php?page=wpnm-dashboard');
+            $source_link = esc_url(admin_url('admin.php?page=wpnm-dashboard'));
         } elseif ($note->note_type === 'post') {
-            $source_type = __('Post', 'wp-notes-manager');
+            $source_type = esc_html__('Post', 'wp-notes-manager');
             $source_icon = 'dashicons-format-aside';
             $source_link = $note->edit_link;
         } elseif ($note->note_type === 'page') {
-            $source_type = __('Page', 'wp-notes-manager');
+            $source_type = esc_html__('Page', 'wp-notes-manager');
             $source_icon = 'dashicons-admin-page';
             $source_link = $note->edit_link;
         }
@@ -1006,13 +1006,13 @@ class AdminManager {
                             </span>
                         </div>
                         <div class="wpnm-note-actions">
-                            <button type="button" class="wpnm-btn wpnm-btn-edit" data-note-id="<?php echo esc_attr($note->id); ?>" title="<?php _e('Edit Note', 'wp-notes-manager'); ?>">
+                            <button type="button" class="wpnm-btn wpnm-btn-edit" data-note-id="<?php echo esc_attr($note->id); ?>" title="<?php esc_html_e('Edit Note', 'wp-notes-manager'); ?>">
                                 <span class="dashicons dashicons-edit"></span>
                             </button>
-                            <button type="button" class="wpnm-btn wpnm-btn-archive" data-note-id="<?php echo esc_attr($note->id); ?>" title="<?php _e('Archive', 'wp-notes-manager'); ?>">
+                            <button type="button" class="wpnm-btn wpnm-btn-archive" data-note-id="<?php echo esc_attr($note->id); ?>" title="<?php esc_html_e('Archive', 'wp-notes-manager'); ?>">
                                 <span class="dashicons dashicons-archive"></span>
                             </button>
-                            <button type="button" class="wpnm-btn wpnm-btn-delete" data-note-id="<?php echo esc_attr($note->id); ?>" title="<?php _e('Delete', 'wp-notes-manager'); ?>">
+                            <button type="button" class="wpnm-btn wpnm-btn-delete" data-note-id="<?php echo esc_attr($note->id); ?>" title="<?php esc_html_e('Delete', 'wp-notes-manager'); ?>">
                                 <span class="dashicons dashicons-trash"></span>
                             </button>
                         </div>
@@ -1031,11 +1031,16 @@ class AdminManager {
                     <?php if ($note->assigned_to): ?>
                         <?php 
                         $assigned_user = get_user_by('id', $note->assigned_to);
-                        $assigned_name = $assigned_user ? $assigned_user->display_name : __('Unknown User', 'wp-notes-manager');
+                        $assigned_name = $assigned_user ? $assigned_user->display_name : esc_html__('Unknown User', 'wp-notes-manager');
                         ?>
                         <div class="wpnm-note-assigned">
                             <span class="dashicons dashicons-admin-users"></span>
-                            <span><?php printf(__('Assigned to: %s', 'wp-notes-manager'), esc_html($assigned_name)); ?></span>
+                            <span>
+                                <?php
+                                // translators: %s is the assigned user name
+                                printf(esc_html__('Assigned to: %s', 'wp-notes-manager'), esc_html($assigned_name));
+                                ?>
+                            </span>
                         </div>
                     <?php endif; ?>
                     
@@ -1050,8 +1055,8 @@ class AdminManager {
                             
                             echo sprintf(
                                 '<span class="deadline-date %s">%s</span>',
-                                $deadline_class,
-                                date_i18n(get_option('date_format') . ' ' . get_option('time_format'), $deadline_timestamp)
+                                esc_attr($deadline_class),
+                                esc_html(date_i18n(get_option('date_format')) . ' ' . get_option('time_format'), $deadline_timestamp)
                             );
                             ?>
                         </div>
@@ -1120,8 +1125,8 @@ class AdminManager {
      */
     private function renderNoteCard($note) {
         $author = get_user_by('id', $note->author_id);
-        $author_name = $author ? $author->display_name : __('Unknown', 'wp-notes-manager');
-        $created_date = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($note->created_at));
+        $author_name = $author ? $author->display_name : esc_html__('Unknown', 'wp-notes-manager');
+        $created_date = esc_html(date_i18n(get_option('date_format')) . ' ' . get_option('time_format'), strtotime($note->created_at));
         
         ?>
         <div class="wpnm-note-card <?php echo esc_attr($note->priority); ?>" data-note-id="<?php echo esc_attr($note->id); ?>">
@@ -1137,15 +1142,15 @@ class AdminManager {
             <div class="wpnm-note-meta">
                 <?php
                 // translators: %1$s is the author name, %2$s is the creation date
-                printf(__('By %1$s on %2$s', 'wp-notes-manager'), esc_html($author_name), esc_html($created_date));
+                printf(esc_html__('By %1$s on %2$s', 'wp-notes-manager'), esc_html($author_name), esc_html($created_date));
                 ?>
             </div>
             <div class="wpnm-note-actions">
                 <button type="button" class="button button-small wpnm-archive-note" data-note-id="<?php echo esc_attr($note->id); ?>">
-                    <?php _e('Archive', 'wp-notes-manager'); ?>
+                    <?php esc_html_e('Archive', 'wp-notes-manager'); ?>
                 </button>
                 <button type="button" class="button button-small wpnm-delete-note" data-note-id="<?php echo esc_attr($note->id); ?>">
-                    <?php _e('Delete', 'wp-notes-manager'); ?>
+                    <?php esc_html_e('Delete', 'wp-notes-manager'); ?>
                 </button>
             </div>
         </div>
@@ -1156,14 +1161,14 @@ class AdminManager {
      * Render general section
      */
     public function renderGeneralSection() {
-        echo '<p>' . __('Configure general plugin settings.', 'wp-notes-manager') . '</p>';
+        echo '<p>' . esc_html__('Configure general plugin settings.', 'wp-notes-manager') . '</p>';
     }
     
     /**
      * Render display section
      */
     public function renderDisplaySection() {
-        echo '<p>' . __('Configure display and interface settings.', 'wp-notes-manager') . '</p>';
+        echo '<p>' . esc_html__('Configure display and interface settings.', 'wp-notes-manager') . '</p>';
     }
     
     /**
@@ -1174,7 +1179,7 @@ class AdminManager {
         $value = isset($settings['auto_cleanup']) ? $settings['auto_cleanup'] : 0;
         
         echo '<input type="checkbox" name="wpnm_settings[auto_cleanup]" value="1" ' . checked(1, $value, false) . ' />';
-        echo '<p class="description">' . __('Automatically clean up deleted notes after the specified number of days.', 'wp-notes-manager') . '</p>';
+        echo '<p class="description">' . esc_html__('Automatically clean up deleted notes after the specified number of days.', 'wp-notes-manager') . '</p>';
     }
     
     /**
@@ -1185,7 +1190,7 @@ class AdminManager {
         $value = isset($settings['cleanup_days']) ? $settings['cleanup_days'] : 30;
         
         echo '<input type="number" name="wpnm_settings[cleanup_days]" value="' . esc_attr($value) . '" min="1" max="365" />';
-        echo '<p class="description">' . __('Number of days to keep deleted notes before permanent deletion.', 'wp-notes-manager') . '</p>';
+        echo '<p class="description">' . esc_html__('Number of days to keep deleted notes before permanent deletion.', 'wp-notes-manager') . '</p>';
     }
     
     /**
@@ -1196,7 +1201,7 @@ class AdminManager {
         $value = isset($settings['show_in_admin_bar']) ? $settings['show_in_admin_bar'] : 1;
         
         echo '<input type="checkbox" name="wpnm_settings[show_in_admin_bar]" value="1" ' . checked(1, $value, false) . ' />';
-        echo '<p class="description">' . __('Show notes count in the admin bar.', 'wp-notes-manager') . '</p>';
+        echo '<p class="description">' . esc_html__('Show notes count in the admin bar.', 'wp-notes-manager') . '</p>';
     }
     
     /**
@@ -1207,7 +1212,7 @@ class AdminManager {
         $value = isset($settings['show_dashboard_widget']) ? $settings['show_dashboard_widget'] : 1;
         
         echo '<input type="checkbox" name="wpnm_settings[show_dashboard_widget]" value="1" ' . checked(1, $value, false) . ' />';
-        echo '<p class="description">' . __('Show recent notes widget on the dashboard.', 'wp-notes-manager') . '</p>';
+        echo '<p class="description">' . esc_html__('Show recent notes widget on the dashboard.', 'wp-notes-manager') . '</p>';
     }
     
     /**
@@ -1232,7 +1237,7 @@ class AdminManager {
      */
     public function renderEnhancedTestPage() {
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have permission to access this page.', 'wp-notes-manager'));
+            wp_die(esc_html__('You do not have permission to access this page.', 'wp-notes-manager'));
         }
         
         // Include and run the enhanced test
@@ -1240,7 +1245,7 @@ class AdminManager {
             include WPNM_PLUGIN_DIR . 'tests/enhanced-test.php';
             wpnm_enhanced_test();
         } else {
-            echo '<div class="wrap"><h1>' . __('Enhanced Test Suite', 'wp-notes-manager') . '</h1>';
+            echo '<div class="wrap"><h1>' . esc_html__('Enhanced Test Suite', 'wp-notes-manager') . '</h1>';
             echo '<p style="color: red;">Enhanced test suite file not found.</p></div>';
         }
     }
@@ -1250,7 +1255,7 @@ class AdminManager {
      */
     public function renderManualChecklistPage() {
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have permission to access this page.', 'wp-notes-manager'));
+            wp_die(esc_html__('You do not have permission to access this page.', 'wp-notes-manager'));
         }
         
         // Include and run the manual checklist
@@ -1258,7 +1263,7 @@ class AdminManager {
             include WPNM_PLUGIN_DIR . 'tests/manual-test-checklist.php';
             wpnm_manual_test_checklist();
         } else {
-            echo '<div class="wrap"><h1>' . __('Manual Testing Checklist', 'wp-notes-manager') . '</h1>';
+            echo '<div class="wrap"><h1>' . esc_html__('Manual Testing Checklist', 'wp-notes-manager') . '</h1>';
             echo '<p style="color: red;">Manual testing checklist file not found.</p></div>';
         }
     }
