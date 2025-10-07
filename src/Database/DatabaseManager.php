@@ -459,7 +459,7 @@ class DatabaseManager {
         
         $count = $this->wpdb->get_var(
             $this->wpdb->prepare(
-                "SELECT COUNT(*) FROM {$this->table_name} WHERE {$where_clause}" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,
+                "SELECT COUNT(*) FROM {$this->table_name} WHERE {$where_clause}", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 $where_values
             )
         );
@@ -615,7 +615,7 @@ class DatabaseManager {
         
         $count = $this->wpdb->get_var(
             $this->wpdb->prepare(
-                "SELECT COUNT(*) FROM {$this->table_name} WHERE status = 'active' AND stage_id = %d" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,
+                "SELECT COUNT(*) FROM {$this->table_name} WHERE status = 'active' AND stage_id = %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 $stage_id
             )
         );
@@ -809,7 +809,7 @@ class DatabaseManager {
         
         $deleted = $this->wpdb->query(
             $this->wpdb->prepare(
-                "DELETE FROM {$this->table_name} WHERE status = 'deleted' AND updated_at < DATE_SUB(NOW(), INTERVAL %d DAY)" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,
+                "DELETE FROM {$this->table_name} WHERE status = 'deleted' AND updated_at < DATE_SUB(NOW(), INTERVAL %d DAY)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 $days
             )
         );
