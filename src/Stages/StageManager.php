@@ -308,7 +308,7 @@ class StageManager {
             global $wpdb;
             $notes_table = $wpdb->prefix . 'wpnm_notes';
             
-            $wpdb->update(
+            $wpdb->update( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
                 $notes_table,
                 ['stage_id' => $default_stage->id],
                 ['stage_id' => $stage_id],

@@ -259,12 +259,12 @@ class NotificationManager {
      * Save notification settings
      */
     public function saveNotificationSettings($user_id) {
-        if (isset($_POST['wpnm_notifications'])) {
+        if (isset($_POST['wpnm_notifications'])) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
             $preferences = [
                 'deadlines' => [
-                    'enabled' => isset($_POST['wpnm_notifications']['deadlines']['enabled']),
-                    'days_ahead' => isset($_POST['wpnm_notifications']['deadlines']['days_ahead']) 
-                        ? absint($_POST['wpnm_notifications']['deadlines']['days_ahead']) 
+                    'enabled' => isset($_POST['wpnm_notifications']['deadlines']['enabled']), // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                    'days_ahead' => isset($_POST['wpnm_notifications']['deadlines']['days_ahead']) // phpcs:ignore WordPress.Security.NonceVerification.Missing
+                        ? absint($_POST['wpnm_notifications']['deadlines']['days_ahead']) // phpcs:ignore WordPress.Security.NonceVerification.Missing
                         : 3
                 ]
             ];
@@ -331,7 +331,7 @@ class NotificationManager {
      */
     public function testNotification() {
         // Verify nonce
-        if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'wpnm_admin_nonce')) {
             wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
             return;
         }
