@@ -209,7 +209,7 @@ class DatabaseManager {
         
         $note = $this->wpdb->get_row(
             $this->wpdb->prepare(
-                "SELECT * FROM {$this->table_name} WHERE id = %d AND status != 'deleted'" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                "SELECT * FROM {$this->table_name} WHERE id = %d AND status != 'deleted'", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 $note_id
             ) // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
         );
