@@ -5,7 +5,7 @@ A comprehensive note management system for WordPress that helps teams organize, 
 [![WordPress](https://img.shields.io/badge/WordPress-5.0%2B-blue.svg)](https://wordpress.org/)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-purple.svg)](https://php.net/)
 [![License](https://img.shields.io/badge/License-GPL%20v2%2B-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![Version](https://img.shields.io/badge/Version-1.0.0-orange.svg)](https://github.com/yourusername/wp-notes-manager/releases)
+[![Version](https://img.shields.io/badge/Version-1.1.0-orange.svg)](https://github.com/yourusername/wp-notes-manager/releases)
 
 ## 🚀 Features
 
@@ -21,6 +21,8 @@ A comprehensive note management system for WordPress that helps teams organize, 
 - **Notification System**: Email notifications for approaching deadlines
 - **Custom Stages**: Create your own stages with custom colors and ordering
 - **Multiple Layouts**: Choose from List, 2-Column, or 3-Column layouts
+- **Frontend Integration**: View notes on frontend pages with floating panel
+- **Post/Page Integration**: Add notes directly to posts and pages from editor
 - **Performance Optimized**: Fast database queries and efficient caching
 
 ## 📋 Requirements
@@ -136,7 +138,7 @@ Developed with ❤️ for the WordPress community.
 
 ## 📊 Stats
 
-- **Version**: 1.0.0
+- **Version**: 1.1.0
 - **Files**: 40+
 - **Lines of Code**: 12,000+
 - **Test Coverage**: 5 test suites

@@ -3,7 +3,7 @@
  * Plugin Name: WP Notes Manager
  * Plugin URI: https://github.com/yourusername/wp-notes-manager
  * Description: A comprehensive note management system for WordPress that helps teams organize, track, and manage notes efficiently.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Your Name
  * Author URI: https://yourwebsite.com
  * License: GPL v2 or later
@@ -16,7 +16,7 @@
  * Network: false
  * 
  * @package WPNotesManager
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 // Prevent direct access
@@ -25,7 +25,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('WPNM_VERSION', '1.0.0');
+define('WPNM_VERSION', '1.1.0');
 define('WPNM_PLUGIN_FILE', __FILE__);
 define('WPNM_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WPNM_PLUGIN_URL', plugin_dir_url(__FILE__));
@@ -124,10 +124,29 @@ class WPNotesManager {
         $this->components['notifications'] = new WPNotesManager\Notifications\NotificationManager();
         $this->components['assets'] = new WPNotesManager\Assets\AssetManager();
         
+        // Check and run migrations if needed
+        $this->checkAndRunMigrations();
+        
         // Initialize each component
         foreach ($this->components as $component) {
             if (method_exists($component, 'init')) {
                 $component->init();
+            }
+        }
+    }
+    
+    private function checkAndRunMigrations() {
+        // Check if migrations have been run
+        $db_version = get_option('wpnm_db_version', '1.0.0');
+        $plugin_version = '1.1.0'; // Updated version with new fields
+        
+        if (version_compare($db_version, $plugin_version, '<')) {
+            // Run migrations
+            $database = $this->components['database'];
+            if ($database) {
+                $database->createTables(); // This will run the migrations
+                update_option('wpnm_db_version', $plugin_version);
+                error_log('WP Notes Manager: Database migrations completed');
             }
         }
     }
@@ -140,6 +159,9 @@ class WPNotesManager {
         // Create database tables
         $database = new WPNotesManager\Database\DatabaseManager();
         $database->createTables();
+        
+        // Set database version
+        update_option('wpnm_db_version', '1.1.0');
         
         // Create default stages
         $stages = new WPNotesManager\Stages\StageManager();
@@ -204,3 +226,4 @@ function wpnm() {
 
 // Start the plugin
 wpnm();
+

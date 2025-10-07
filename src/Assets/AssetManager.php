@@ -110,8 +110,8 @@ class AssetManager {
      * Enqueue frontend assets
      */
     public function enqueueFrontendAssets() {
-        // Only enqueue if needed (e.g., if showing notes on frontend)
-        if (is_user_logged_in() && current_user_can('edit_posts')) {
+        // Only enqueue on single posts/pages
+        if (is_singular()) {
             
             // Frontend CSS
             wp_enqueue_style(

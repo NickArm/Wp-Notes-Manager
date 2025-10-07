@@ -120,9 +120,10 @@ jQuery(document).ready(function($) {
         button.text('Adding...').prop("disabled", true);
         
         // Prepare data
+        var postType = $('input[name="post_type"]').val() || 'post';
         var data = {
             action: "wpnm_add_note",
-            note_type: "post",
+            note_type: postType,
             post_id: $('input[name="post_ID"]').val(),
             title: container.find("#wpnm-note-title").val(),
             content: container.find("#wpnm-note-content").val(),

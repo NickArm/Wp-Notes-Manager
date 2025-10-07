@@ -83,6 +83,10 @@ class AjaxHandler {
         
         // Save layout preference
         add_action('wp_ajax_wpnm_save_layout_preference', [$this, 'saveLayoutPreference']);
+        
+        // Get current post ID from URL (frontend)
+        add_action('wp_ajax_wpnm_get_current_post_id', [$this, 'getCurrentPostId']);
+        add_action('wp_ajax_nopriv_wpnm_get_current_post_id', [$this, 'getCurrentPostId']);
     }
     
     /**
@@ -103,6 +107,7 @@ class AjaxHandler {
         if (!current_user_can('edit_posts')) {
             error_log('WP Notes Manager: User does not have permission');
             wp_send_json_error(['message' => __('You do not have permission to add notes.', 'wp-notes-manager')]);
+            return;
         }
         
         // Sanitize input
@@ -121,18 +126,21 @@ class AjaxHandler {
         // Validate required fields
         if (empty($note_data['title']) || empty($note_data['content'])) {
             wp_send_json_error(['message' => __('Title and content are required.', 'wp-notes-manager')]);
+            return;
         }
         
         // Validate note type
         $allowed_types = ['dashboard', 'post', 'page'];
         if (!in_array($note_data['note_type'], $allowed_types)) {
             wp_send_json_error(['message' => __('Invalid note type.', 'wp-notes-manager')]);
+            return;
         }
         
         // Validate priority
         $allowed_priorities = ['low', 'medium', 'high', 'urgent'];
         if (!in_array($note_data['priority'], $allowed_priorities)) {
             wp_send_json_error(['message' => __('Invalid priority level.', 'wp-notes-manager')]);
+            return;
         }
         
         // Create note
@@ -507,6 +515,31 @@ class AjaxHandler {
             'message' => __('Layout preference saved successfully!', 'wp-notes-manager'),
             'layout' => $layout
         ]);
+    }
+    
+    /**
+     * Get current post ID from URL (for frontend)
+     */
+    public function getCurrentPostId() {
+        // Verify nonce
+        if (!wp_verify_nonce($_POST['nonce'], 'wpnm_frontend_nonce')) {
+            wp_send_json_error(['message' => __('Security check failed.', 'wp-notes-manager')]);
+            return;
+        }
+        
+        $url = sanitize_url($_POST['url']);
+        
+        // Try to get post ID from URL
+        $post_id = url_to_postid($url);
+        
+        if ($post_id) {
+            wp_send_json_success([
+                'post_id' => $post_id,
+                'post_type' => get_post_type($post_id)
+            ]);
+        } else {
+            wp_send_json_error(['message' => __('Could not determine post ID from URL.', 'wp-notes-manager')]);
+        }
     }
 }
 

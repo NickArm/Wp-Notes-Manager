@@ -108,20 +108,42 @@ jQuery(document).ready(function($) {
     }
     
     function getCurrentPostId() {
-        // Try to get post ID from various sources
+        // Try to get post ID from body data attribute (set by WordPress)
         var postId = $("body").data("post-id");
         if (postId) return postId;
         
-        postId = $("input[name='post_ID']").val();
-        if (postId) return postId;
+        // Try to get from global WordPress object
+        if (typeof wp !== 'undefined' && wp.data && wp.data.select('core/editor')) {
+            var postId = wp.data.select('core/editor').getCurrentPostId();
+            if (postId) return postId;
+        }
         
-        postId = $("input[name='post_id']").val();
-        if (postId) return postId;
-        
-        // Try to extract from URL
+        // Try to extract from URL for single posts/pages
         var url = window.location.href;
-        var match = url.match(/post=(\d+)/);
-        if (match) return match[1];
+        var path = window.location.pathname;
+        
+        // For single posts/pages, try to match against WordPress URL structure
+        // This is a fallback - ideally the theme should provide post ID via body data
+        if (path && path !== '/' && !path.includes('/wp-admin/')) {
+            // Try to get post ID via AJAX call to WordPress
+            var postId = null;
+            $.ajax({
+                url: wpnm_frontend.ajax_url,
+                type: "POST",
+                async: false, // Synchronous for this fallback
+                data: {
+                    action: "wpnm_get_current_post_id",
+                    url: url,
+                    nonce: wpnm_frontend.nonce
+                },
+                success: function(response) {
+                    if (response.success && response.data.post_id) {
+                        postId = response.data.post_id;
+                    }
+                }
+            });
+            if (postId) return postId;
+        }
         
         return null;
     }

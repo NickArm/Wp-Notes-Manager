@@ -5,6 +5,57 @@ All notable changes to WP Notes Manager will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2024-10-07
+
+### Added
+- **Frontend Integration**
+  - Floating notes panel on frontend pages
+  - Automatic notes display for logged-in users
+  - Keyboard shortcut (Alt+N) to toggle notes panel
+  - Responsive frontend design with mobile support
+  - AJAX-powered notes loading on frontend
+
+- **Enhanced Post/Page Integration**
+  - Fixed note type detection for posts vs pages
+  - Dynamic post type assignment in JavaScript
+  - Improved meta box integration
+  - Better note association with content
+
+### Fixed
+- **Critical Bug Fixes**
+  - Fixed notes not appearing in post/page meta boxes
+  - Corrected note_type mismatch in database
+  - Fixed JavaScript nonce conflicts
+  - Resolved AJAX error handling issues
+  - Fixed missing return statements in validation
+
+- **Database Improvements**
+  - Added automatic migration system
+  - Enhanced database schema with post_id and status fields
+  - Improved query performance
+  - Better data integrity validation
+
+### Improved
+- **User Experience**
+  - Smoother AJAX operations
+  - Better error messages
+  - Enhanced frontend integration
+  - Improved mobile responsiveness
+  - More intuitive note management
+
+- **Developer Experience**
+  - Better code organization
+  - Enhanced debugging capabilities
+  - Improved error logging
+  - More robust validation system
+
+### Technical Changes
+- Updated database migration system
+- Enhanced frontend asset loading
+- Improved AJAX handlers
+- Better security validation
+- Enhanced error handling
+
 ## [1.0.0] - 2024-01-15
 
 ### Added

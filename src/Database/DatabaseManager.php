@@ -61,6 +61,7 @@ class DatabaseManager {
         $notes_table = $this->wpdb->prefix . 'wpnm_notes';
         $notes_sql = "CREATE TABLE $notes_table (
             id bigint(20) NOT NULL AUTO_INCREMENT,
+            post_id bigint(20) DEFAULT NULL,
             title varchar(255) NOT NULL,
             content longtext,
             priority enum('low','medium','high','urgent') DEFAULT 'medium',
@@ -69,18 +70,24 @@ class DatabaseManager {
             assigned_to bigint(20) DEFAULT NULL,
             stage_id bigint(20) DEFAULT NULL,
             deadline datetime DEFAULT NULL,
+            status varchar(20) DEFAULT 'active',
             is_archived tinyint(1) DEFAULT 0,
             created_at datetime DEFAULT CURRENT_TIMESTAMP,
             updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id),
+            KEY post_id (post_id),
             KEY author_id (author_id),
             KEY assigned_to (assigned_to),
             KEY stage_id (stage_id),
             KEY deadline (deadline),
+            KEY status (status),
             KEY is_archived (is_archived)
         ) " . $this->wpdb->get_charset_collate() . ";";
         
         dbDelta($notes_sql);
+        
+        // Run migrations for existing installations
+        $this->runMigrations();
         
         // Stages table
         $stages_table = $this->wpdb->prefix . 'wpnm_stages';
@@ -137,22 +144,35 @@ class DatabaseManager {
                 return false;
             }
             
+            // Prepare data for insert (matching table structure)
+            $insert_data = [
+                'post_id' => $note_data['post_id'],
+                'title' => $note_data['title'],
+                'content' => $note_data['content'],
+                'priority' => $note_data['priority'],
+                'note_type' => $note_data['note_type'],
+                'author_id' => $note_data['author_id'],
+                'assigned_to' => $note_data['assigned_to'],
+                'stage_id' => $note_data['stage_id'],
+                'deadline' => $note_data['deadline'],
+                'status' => $note_data['status']
+            ];
+            
             // Insert note
             $result = $this->wpdb->insert(
                 $this->table_name,
-                $note_data,
+                $insert_data,
                 [
                     '%d', // post_id
-                    '%s', // note_type
                     '%s', // title
                     '%s', // content
-                '%s', // author_id
-                '%d', // assigned_to
-                '%d', // stage_id
-                '%s', // deadline
-                '%s', // status
-                '%s'  // priority
-                // color removed
+                    '%s', // priority
+                    '%s', // note_type
+                    '%d', // author_id
+                    '%d', // assigned_to
+                    '%d', // stage_id
+                    '%s', // deadline
+                    '%s'  // status
                 ]
             );
             
@@ -882,6 +902,52 @@ class DatabaseManager {
         }
         
         return true;
+    }
+    
+    /**
+     * Run database migrations for existing installations
+     */
+    private function runMigrations() {
+        $table_name = $this->wpdb->prefix . 'wpnm_notes';
+        
+        // Check if table exists
+        $table_exists = $this->wpdb->get_var("SHOW TABLES LIKE '$table_name'") === $table_name;
+        
+        if (!$table_exists) {
+            return; // Table doesn't exist yet, will be created by dbDelta
+        }
+        
+        // Check if post_id column exists
+        $post_id_exists = $this->wpdb->get_results(
+            "SHOW COLUMNS FROM `{$table_name}` LIKE 'post_id'"
+        );
+        
+        if (empty($post_id_exists)) {
+            // Add post_id column after id
+            $this->wpdb->query(
+                "ALTER TABLE `{$table_name}` ADD COLUMN `post_id` bigint(20) DEFAULT NULL AFTER `id`"
+            );
+            $this->wpdb->query(
+                "ALTER TABLE `{$table_name}` ADD KEY `post_id` (`post_id`)"
+            );
+            error_log('WP Notes Manager: Added post_id column to notes table');
+        }
+        
+        // Check if status column exists
+        $status_exists = $this->wpdb->get_results(
+            "SHOW COLUMNS FROM `{$table_name}` LIKE 'status'"
+        );
+        
+        if (empty($status_exists)) {
+            // Add status column before is_archived
+            $this->wpdb->query(
+                "ALTER TABLE `{$table_name}` ADD COLUMN `status` varchar(20) DEFAULT 'active' AFTER `deadline`"
+            );
+            $this->wpdb->query(
+                "ALTER TABLE `{$table_name}` ADD KEY `status` (`status`)"
+            );
+            error_log('WP Notes Manager: Added status column to notes table');
+        }
     }
 }
 

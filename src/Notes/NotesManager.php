@@ -67,6 +67,9 @@ class NotesManager {
         add_filter('manage_pages_columns', [$this, 'addNotesColumn']);
         add_action('manage_posts_custom_column', [$this, 'showNotesColumn'], 10, 2);
         add_action('manage_pages_custom_column', [$this, 'showNotesColumn'], 10, 2);
+        
+        // Add post ID to body tag for frontend
+        add_action('wp_head', [$this, 'addPostIdToBody']);
     }
     
     /**
@@ -194,48 +197,6 @@ class NotesManager {
             font-size: 11px;
         }
         </style>
-        
-        <script>
-        jQuery(document).ready(function($) {
-            $('#wpnm-add-note').on('click', function() {
-                var title = $('#wpnm-note-title').val();
-                var content = $('#wpnm-note-content').val();
-                var priority = $('#wpnm-note-priority').val();
-                var color = $('#wpnm-note-color').val();
-                
-                if (!title || !content) {
-                    alert('<?php _e('Please fill in both title and content.', 'wp-notes-manager'); ?>');
-                    return;
-                }
-                
-                // AJAX call to add note
-                $.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'wpnm_add_note',
-                        post_id: <?php echo $post->ID; ?>,
-                        note_type: '<?php echo $post->post_type; ?>',
-                        title: title,
-                        content: content,
-                        priority: priority,
-                        color: color,
-                        nonce: '<?php echo wp_create_nonce('wpnm_add_note'); ?>'
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            location.reload();
-                        } else {
-                            alert('<?php _e('Error adding note. Please try again.', 'wp-notes-manager'); ?>');
-                        }
-                    },
-                    error: function() {
-                        alert('<?php _e('Error adding note. Please try again.', 'wp-notes-manager'); ?>');
-                    }
-                });
-            });
-        });
-        </script>
         <?php
     }
     
@@ -630,6 +591,21 @@ class NotesManager {
                 echo '<span style="color: #0073aa;">' . sprintf(_n('%d note', '%d notes', $notes_count, 'wp-notes-manager'), $notes_count) . '</span>';
             } else {
                 echo '<span style="color: #999;">' . __('No notes', 'wp-notes-manager') . '</span>';
+            }
+        }
+    }
+    
+    /**
+     * Add post ID to body tag for frontend JavaScript
+     */
+    public function addPostIdToBody() {
+        if (is_singular()) {
+            global $post;
+            if ($post) {
+                echo '<script type="text/javascript">' . "\n";
+                echo 'document.body.setAttribute("data-post-id", "' . esc_js($post->ID) . '");' . "\n";
+                echo 'document.body.setAttribute("data-post-type", "' . esc_js($post->post_type) . '");' . "\n";
+                echo '</script>' . "\n";
             }
         }
     }
