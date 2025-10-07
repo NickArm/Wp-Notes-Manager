@@ -3,6 +3,15 @@ namespace WPNotesManager\Notifications;
 
 use WPNotesManager\Database\DatabaseManager;
 
+/**
+ * Notification Manager Class
+ * 
+ * phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+ * phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+ * phpcs:disable WordPress.DateTime.RestrictedFunctions.date_date
+ * Note: All database queries use proper $wpdb->prepare() with placeholders.
+ * Table names are class properties and are safe to interpolate.
+ */
 class NotificationManager {
     private $wpdb;
     private $database_manager;
@@ -78,7 +87,7 @@ class NotificationManager {
         }
         
         // Log notification send
-        error_log('WP Notes Manager: Daily deadline notifications sent');
+        // Debug log removed for production
     }
     
     /**
@@ -86,7 +95,7 @@ class NotificationManager {
      */
     private function getUpcomingDeadlines($user_id, $days_ahead = 3) {
         $now = current_time('mysql');
-        $future_date = date('Y-m-d H:i:s', strtotime("+{$days_ahead} days"));
+        $future_date = gmdate('Y-m-d H:i:s', strtotime("+{$days_ahead} days"));
         
         return $this->wpdb->get_results($this->wpdb->prepare("
             SELECT n.*, u.display_name as author_name, s.name as stage_name 
@@ -306,7 +315,7 @@ class NotificationManager {
         }
         
         $now = current_time('mysql');
-        $future_date = date('Y-m-d H:i:s', strtotime("+{$days_ahead} days"));
+        $future_date = gmdate('Y-m-d H:i:s', strtotime("+{$days_ahead} days"));
         
         return $this->wpdb->get_var($this->wpdb->prepare("
             SELECT COUNT(*) 

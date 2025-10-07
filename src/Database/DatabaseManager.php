@@ -182,7 +182,7 @@ class DatabaseManager {
             );
             
             if ($result === false) {
-                error_log('WP Notes Manager: Database insert failed: ' . $this->wpdb->last_error);
+                // Debug log removed for production
                 return false;
             }
             

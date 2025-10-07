@@ -91,7 +91,8 @@ class WPNotesManager {
     
     private function init() {
         // Load text domain
-        add_action('plugins_loaded', [$this, 'loadTextDomain']);
+        // WordPress.org automatically loads translations since WP 4.6
+        // add_action('plugins_loaded', [$this, 'loadTextDomain']);
         
         // Initialize components
         add_action('init', [$this, 'initComponents']);
@@ -145,7 +146,7 @@ class WPNotesManager {
             if ($database) {
                 $database->createTables(); // This will run the migrations
                 update_option('wpnm_db_version', $plugin_version);
-                error_log('WP Notes Manager: Database migrations completed');
+                // Debug log removed for production
             }
         }
     }

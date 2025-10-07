@@ -43,4 +43,4 @@ foreach ($tables as $table) {
 wp_cache_flush();
 
 // Log uninstall action
-error_log('WP Notes Manager: Plugin uninstalled and all data removed');
+// Debug log removed for production

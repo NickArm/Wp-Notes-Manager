@@ -94,18 +94,18 @@ class AjaxHandler {
      */
     public function addNote() {
         // Debug logging
-        error_log('WP Notes Manager: AJAX addNote called');
+        // Debug log removed for production
         
         // Verify nonce
         if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
-            error_log('WP Notes Manager: Nonce verification failed');
+            // Debug log removed for production
             wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
             return;
         }
         
         // Check user permissions
         if (!current_user_can('edit_posts')) {
-            error_log('WP Notes Manager: User does not have permission');
+            // Debug log removed for production
             wp_send_json_error(['message' => esc_html__('You do not have permission to add notes.', 'wp-notes-manager')]);
             return;
         }
@@ -146,7 +146,7 @@ class AjaxHandler {
         // Create note
         error_log('WP Notes Manager: Creating note with data: ' . print_r($note_data, true));
         $note_id = $this->getDatabase()->createNote($note_data);
-        error_log('WP Notes Manager: Note creation result: ' . $note_id);
+        // Debug log removed for production
         
         if ($note_id) {
             // Get the created note

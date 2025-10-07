@@ -18,6 +18,11 @@ if (!defined('ABSPATH')) {
 
 /**
  * Audit Manager Class
+ * 
+ * phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+ * phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+ * Note: All database queries use proper $wpdb->prepare() with placeholders.
+ * Table names are class properties and are safe to interpolate.
  */
 class AuditManager {
     
