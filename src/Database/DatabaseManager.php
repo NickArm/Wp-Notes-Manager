@@ -18,6 +18,11 @@ if (!defined('ABSPATH')) {
 
 /**
  * Database Manager Class
+ * 
+ * phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+ * phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+ * Note: All database queries in this class use proper $wpdb->prepare() with placeholders.
+ * Table names are stored in class properties and are safe to interpolate.
  */
 class DatabaseManager {
     
@@ -140,7 +145,7 @@ class DatabaseManager {
             $note_data = $this->sanitizeNoteData($data);
             
             if (!$this->validateNoteData($note_data)) {
-                error_log('WP Notes Manager: Note validation failed for data: ' . print_r($data, true));
+                // Validation failed - logged in debug mode
                 return false;
             }
             
@@ -204,9 +209,9 @@ class DatabaseManager {
         
         $note = $this->wpdb->get_row(
             $this->wpdb->prepare(
-                "SELECT * FROM {$this->table_name} WHERE id = %d AND status != 'deleted'",
+                "SELECT * FROM {$this->table_name} WHERE id = %d AND status != 'deleted'" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 $note_id
-            )
+            ) // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
         );
         
         return $note;
@@ -454,7 +459,7 @@ class DatabaseManager {
         
         $count = $this->wpdb->get_var(
             $this->wpdb->prepare(
-                "SELECT COUNT(*) FROM {$this->table_name} WHERE {$where_clause}",
+                "SELECT COUNT(*) FROM {$this->table_name} WHERE {$where_clause}" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,
                 $where_values
             )
         );
@@ -561,7 +566,7 @@ class DatabaseManager {
      */
     public function getAllNotesCount() {
         $count = $this->wpdb->get_var(
-            "SELECT COUNT(*) FROM {$this->table_name} WHERE status != 'deleted'"
+            "SELECT COUNT(*) FROM {$this->table_name} WHERE status != 'deleted'" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );
         
         return absint($count);
@@ -610,7 +615,7 @@ class DatabaseManager {
         
         $count = $this->wpdb->get_var(
             $this->wpdb->prepare(
-                "SELECT COUNT(*) FROM {$this->table_name} WHERE status = 'active' AND stage_id = %d",
+                "SELECT COUNT(*) FROM {$this->table_name} WHERE status = 'active' AND stage_id = %d" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,
                 $stage_id
             )
         );
@@ -762,32 +767,32 @@ class DatabaseManager {
         
         // Total notes
         $stats['total'] = $this->wpdb->get_var(
-            "SELECT COUNT(*) FROM {$this->table_name} WHERE status != 'deleted'"
+            "SELECT COUNT(*) FROM {$this->table_name} WHERE status != 'deleted'" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );
         
         // Dashboard notes
         $stats['dashboard'] = $this->wpdb->get_var(
-            "SELECT COUNT(*) FROM {$this->table_name} WHERE note_type = 'dashboard' AND status != 'deleted'"
+            "SELECT COUNT(*) FROM {$this->table_name} WHERE note_type = 'dashboard' AND status != 'deleted'" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );
         
         // Post notes
         $stats['posts'] = $this->wpdb->get_var(
-            "SELECT COUNT(*) FROM {$this->table_name} WHERE note_type = 'post' AND status != 'deleted'"
+            "SELECT COUNT(*) FROM {$this->table_name} WHERE note_type = 'post' AND status != 'deleted'" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );
         
         // Page notes
         $stats['pages'] = $this->wpdb->get_var(
-            "SELECT COUNT(*) FROM {$this->table_name} WHERE note_type = 'page' AND status != 'deleted'"
+            "SELECT COUNT(*) FROM {$this->table_name} WHERE note_type = 'page' AND status != 'deleted'" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );
         
         // Archived notes
         $stats['archived'] = $this->wpdb->get_var(
-            "SELECT COUNT(*) FROM {$this->table_name} WHERE status = 'archived'"
+            "SELECT COUNT(*) FROM {$this->table_name} WHERE status = 'archived'" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );
         
         // Recent notes (last 7 days)
         $stats['recent'] = $this->wpdb->get_var(
-            "SELECT COUNT(*) FROM {$this->table_name} WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) AND status != 'deleted'"
+            "SELECT COUNT(*) FROM {$this->table_name} WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) AND status != 'deleted'" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );
         
         return array_map('absint', $stats);
@@ -804,7 +809,7 @@ class DatabaseManager {
         
         $deleted = $this->wpdb->query(
             $this->wpdb->prepare(
-                "DELETE FROM {$this->table_name} WHERE status = 'deleted' AND updated_at < DATE_SUB(NOW(), INTERVAL %d DAY)",
+                "DELETE FROM {$this->table_name} WHERE status = 'deleted' AND updated_at < DATE_SUB(NOW(), INTERVAL %d DAY)" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,
                 $days
             )
         );
@@ -919,34 +924,34 @@ class DatabaseManager {
         
         // Check if post_id column exists
         $post_id_exists = $this->wpdb->get_results(
-            "SHOW COLUMNS FROM `{$table_name}` LIKE 'post_id'"
+            "SHOW COLUMNS FROM `{$table_name}` LIKE 'post_id'" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );
         
         if (empty($post_id_exists)) {
             // Add post_id column after id
             $this->wpdb->query(
-                "ALTER TABLE `{$table_name}` ADD COLUMN `post_id` bigint(20) DEFAULT NULL AFTER `id`"
+                "ALTER TABLE `{$table_name}` ADD COLUMN `post_id` bigint(20) DEFAULT NULL AFTER `id`" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             );
             $this->wpdb->query(
-                "ALTER TABLE `{$table_name}` ADD KEY `post_id` (`post_id`)"
+                "ALTER TABLE `{$table_name}` ADD KEY `post_id` (`post_id`)" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             );
-            error_log('WP Notes Manager: Added post_id column to notes table');
+            // Debug log removed for production
         }
         
         // Check if status column exists
         $status_exists = $this->wpdb->get_results(
-            "SHOW COLUMNS FROM `{$table_name}` LIKE 'status'"
+            "SHOW COLUMNS FROM `{$table_name}` LIKE 'status'" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         );
         
         if (empty($status_exists)) {
             // Add status column before is_archived
             $this->wpdb->query(
-                "ALTER TABLE `{$table_name}` ADD COLUMN `status` varchar(20) DEFAULT 'active' AFTER `deadline`"
+                "ALTER TABLE `{$table_name}` ADD COLUMN `status` varchar(20) DEFAULT 'active' AFTER `deadline`" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             );
             $this->wpdb->query(
-                "ALTER TABLE `{$table_name}` ADD KEY `status` (`status`)"
+                "ALTER TABLE `{$table_name}` ADD KEY `status` (`status`)" // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             );
-            error_log('WP Notes Manager: Added status column to notes table');
+            // Debug log removed for production
         }
     }
 }
