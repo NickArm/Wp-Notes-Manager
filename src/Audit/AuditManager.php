@@ -85,7 +85,7 @@ class AuditManager {
             'new_value' => isset($details['new_value']) ? maybe_serialize($details['new_value']) : null,
             'details' => maybe_serialize($details),
             'ip_address' => $this->getClientIP(),
-            'user_agent' => sanitize_text_field($_SERVER['HTTP_USER_AGENT'] ?? '')
+            'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : ''
         ];
         
         // Insert log entry
@@ -124,17 +124,19 @@ class AuditManager {
         
         $where_clause = !empty($where_conditions) ? 'WHERE ' . implode(' AND ', $where_conditions) : '';
         
-        $logs = $this->wpdb->get_results(
-            $this->wpdb->prepare(
-                "SELECT al.*, u.display_name as user_name, n.title as note_title 
+        // Build query with proper placeholders
+        $query = "SELECT al.*, u.display_name as user_name, n.title as note_title 
                  FROM {$this->table_name} al
                  LEFT JOIN {$this->wpdb->users} u ON al.user_id = u.ID
                  LEFT JOIN {$this->wpdb->prefix}wpnm_notes n ON al.note_id = n.id
                  {$where_clause}
                  ORDER BY al.created_at DESC
-                 LIMIT %d OFFSET %d",
-                array_merge($where_values, [$limit, $offset])
-            )
+                 LIMIT %d OFFSET %d";
+        
+        // Prepare query with all values
+        $prepared_values = array_merge($where_values, [$limit, $offset]);
+        $logs = $this->wpdb->get_results(
+            $this->wpdb->prepare($query, $prepared_values)
         );
         
         // Unserialize details
@@ -164,12 +166,17 @@ class AuditManager {
         
         $where_clause = !empty($where_conditions) ? 'WHERE ' . implode(' AND ', $where_conditions) : '';
         
-        $count = $this->wpdb->get_var(
-            $this->wpdb->prepare(
-                "SELECT COUNT(*) FROM {$this->table_name} {$where_clause}",
-                $where_values
-            )
-        );
+        // Build query
+        $query = "SELECT COUNT(*) FROM {$this->table_name} {$where_clause}";
+        
+        // Prepare query if we have values
+        if (!empty($where_values)) {
+            $count = $this->wpdb->get_var(
+                $this->wpdb->prepare($query, $where_values)
+            );
+        } else {
+            $count = $this->wpdb->get_var($query);
+        }
         
         return absint($count);
     }
@@ -182,16 +189,15 @@ class AuditManager {
      */
     public function clearAuditLogs($days = null) {
         if ($days === null) {
-            // Clear all logs
-            $deleted = $this->wpdb->query("DELETE FROM {$this->table_name}");
+            // Clear all logs - use a safe query without variables
+            $query = "DELETE FROM {$this->table_name}";
+            $deleted = $this->wpdb->query($query); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
         } else {
             // Clear logs older than specified days
             $days = absint($days);
+            $query = "DELETE FROM {$this->table_name} WHERE created_at < DATE_SUB(NOW(), INTERVAL %d DAY)";
             $deleted = $this->wpdb->query(
-                $this->wpdb->prepare(
-                    "DELETE FROM {$this->table_name} WHERE created_at < DATE_SUB(NOW(), INTERVAL %d DAY)",
-                    $days
-                )
+                $this->wpdb->prepare($query, $days)
             );
         }
         
@@ -208,7 +214,8 @@ class AuditManager {
         
         foreach ($ip_keys as $key) {
             if (array_key_exists($key, $_SERVER) === true) {
-                foreach (explode(',', $_SERVER[$key]) as $ip) {
+                $server_value = isset($_SERVER[$key]) ? wp_unslash($_SERVER[$key]) : '';
+                foreach (explode(',', $server_value) as $ip) {
                     $ip = trim($ip);
                     
                     if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
@@ -218,7 +225,7 @@ class AuditManager {
             }
         }
         
-        return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+        return isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : '0.0.0.0';
     }
     
     /**
@@ -231,7 +238,8 @@ class AuditManager {
         }
         
         // Verify nonce
-        if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
+        $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
+        if (!wp_verify_nonce($nonce, 'wpnm_admin_nonce')) {
             wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
         }
         
@@ -259,7 +267,8 @@ class AuditManager {
         }
         
         // Verify nonce
-        if (!wp_verify_nonce($_POST['nonce'], 'wpnm_admin_nonce')) {
+        $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
+        if (!wp_verify_nonce($nonce, 'wpnm_admin_nonce')) {
             wp_send_json_error(['message' => esc_html__('Security check failed.', 'wp-notes-manager')]);
         }
         
